@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+.nav-link {
+  @apply text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors;
+}
