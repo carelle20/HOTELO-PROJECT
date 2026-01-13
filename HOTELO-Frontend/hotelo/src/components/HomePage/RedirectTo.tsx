@@ -119,7 +119,8 @@ export default function RedirectTo() {
                         </span>
                     </div>
 
-                    <button className="text-sm font-semibold text-[#0B1E3A] bg-yellow-400 px-4 py-2 rounded-lg hover:bg-yellow-300 transition">
+                    <button 
+                      className="text-sm font-semibold text-[#0B1E3A] bg-yellow-400 px-4 py-2 rounded-lg hover:bg-yellow-300 transition">
                         Voir détails
                     </button>
                     </div>

@@ -51,11 +51,11 @@ export default function Navbar() {
 
           {/* Desktop actions */}
           <div className="hidden md:flex items-center gap-4">
-            <NavLink to="/login" className="text-sm font-medium text-slate-700 hover:text-slate-900">
+            <NavLink to="/connexion" className="text-sm font-medium text-slate-700 hover:text-slate-900">
               Se connecter
             </NavLink>
             <NavLink
-              to="/register"
+              to="/inscription"
               className="rounded-md bg-yellow-500 px-4 py-2 text-sm font-medium text-white hover:bg-yellow-600 transition"
             >
               Inscription

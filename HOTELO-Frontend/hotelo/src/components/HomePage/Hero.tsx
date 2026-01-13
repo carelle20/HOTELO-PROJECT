@@ -66,7 +66,7 @@ export default function Hero() {
               className="mt-8 flex flex-wrap gap-4"
             >
               <Link
-                to="/register"
+                to="/inscription"
                 className="inline-flex items-center justify-center px-8 py-3 text-base font-semibold rounded-lg bg-[#F4B400] text-[#0B1E3A] hover:bg-yellow-400 transition shadow-lg"
               >
                 Créer un compte

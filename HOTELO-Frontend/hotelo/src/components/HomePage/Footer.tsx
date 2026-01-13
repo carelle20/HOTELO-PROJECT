@@ -193,7 +193,7 @@ export default function Footer() {
 
       {/* Bas du footer */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-12 flex flex-col md:flex-row items-center justify-between border-t border-gray-800 pt-6 pb-8 text-xs md:text-sm text-gray-400 gap-4">
-        <span className="text-white italic">© 2025 HOTELO. Tous droits réservés.</span>
+        <span className="text-white italic">© 2026 HOTELO. Tous droits réservés.</span>
 
         <span className="font-extrabold text-yellow-500 tracking-widest">
           FROM DGA
