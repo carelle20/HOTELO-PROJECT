@@ -60,34 +60,34 @@ export default function Contact() {
             <div className="space-y-6">
 
               {/* Email */}
-              <div className="flex items-center gap-4 bg-white p-5 rounded-2xl shadow-sm">
+              <div className="flex items-center gap-4 bg-white p-5 rounded-2xl shadow-xl border border-slate-100">
                 <div className="w-12 h-12 rounded-xl bg-yellow-500 text-slate-900 flex items-center justify-center">
                   <Mail size={22} />
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-900">Email</p>
+                  <p className="font-bold text-slate-700">Email</p>
                   <p className="text-slate-600">info@digitalgenerationacademy.com</p>
                 </div>
               </div>
 
               {/* Téléphone */}
-              <div className="flex items-center gap-4 bg-white p-5 rounded-2xl shadow-sm">
+              <div className="flex items-center gap-4 bg-white p-5 rounded-2xl shadow-xl border border-slate-100">
                 <div className="w-12 h-12 rounded-xl bg-yellow-500 text-slate-900 flex items-center justify-center">
                   <Phone size={22} />
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-900">Téléphone</p>
+                  <p className="font-bold text-slate-700">Téléphone</p>
                   <p className="text-slate-600">+237 651 36 98 77</p>
                 </div>
               </div>
 
               {/* Localisation */}
-              <div className="flex items-center gap-4 bg-white p-5 rounded-2xl shadow-sm">
+              <div className="flex items-center gap-4 bg-white p-5 rounded-2xl shadow-xl border border-slate-100">
                 <div className="w-12 h-12 rounded-xl bg-yellow-500 text-slate-900 flex items-center justify-center">
                   <MapPin size={22} />
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-900">Localisation</p>
+                  <p className="font-bold text-slate-700">Localisation</p>
                   <p className="text-slate-600">Cameroun</p>
                 </div>
               </div>
@@ -100,7 +100,7 @@ export default function Contact() {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="bg-white rounded-3xl p-8 shadow-lg text-left"
+            className="bg-white rounded-3xl p-8 shadow-xl border border-slate-100 text-left"
             onSubmit={(e) => e.preventDefault()}
           >
             <h2 className="text-2xl font-bold text-slate-900 mb-6">
@@ -110,7 +110,7 @@ export default function Contact() {
             <div className="grid gap-6">
               {/* Nom */}
               <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-700 ml-1">
+                <label className="text-sm font-bold text-slate-700 ml-1">
                   Nom <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -123,7 +123,7 @@ export default function Contact() {
 
               {/* Email */}
               <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-700 ml-1">
+                <label className="text-sm font-bold text-slate-700 ml-1">
                   Email <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -136,7 +136,7 @@ export default function Contact() {
 
               {/* Sujet */}
               <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-700 ml-1">
+                <label className="text-sm font-bold text-slate-700 ml-1">
                   Sujet
                 </label>
                 <input
@@ -148,7 +148,7 @@ export default function Contact() {
 
               {/* Message */}
               <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-700 ml-1">
+                <label className="text-sm font-bold text-slate-700 ml-1">
                   Message <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -161,7 +161,7 @@ export default function Contact() {
 
               <button
                 type="submit"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-yellow-600 text-white px-6 py-3 font-semibold hover:bg-slate-800 transition"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-yellow-500 text-slate-900 px-6 py-3 font-semibold hover:bg-slate-800 hover:text-white transition"
               >
                 Envoyer le message
                 <Send size={18} />
@@ -178,19 +178,19 @@ export default function Contact() {
 
           <div className="flex flex-col items-center gap-3">
             <Clock className="text-yellow-400" />
-            <p className="font-semibold text-slate-900">Réponse rapide</p>
+            <p className="font-bold text-slate-900">Réponse rapide</p>
             <p className="text-sm text-slate-600">Réaction sous 24h</p>
           </div>
 
           <div className="flex flex-col items-center gap-3">
             <ShieldCheck className="text-yellow-400" />
-            <p className="font-semibold text-slate-900">Données sécurisées</p>
+            <p className="font-bold text-slate-900">Données sécurisées</p>
             <p className="text-sm text-slate-600">Vos informations sont protégées</p>
           </div>
 
           <div className="flex flex-col items-center gap-3">
             <MessageSquareText className="text-yellow-400" />
-            <p className="font-semibold text-slate-900">Support humain</p>
+            <p className="font-bold text-slate-900">Support humain</p>
             <p className="text-sm text-slate-600">Assistance dédiée</p>
           </div>
 

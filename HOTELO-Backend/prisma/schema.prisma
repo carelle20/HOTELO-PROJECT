@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  client
+  chef_hotel
+  admin
+  super_admin
+}
+
+model Utilisateur {
+  id              Int      @id @default(autoincrement())
+  prenom          String
+  nom             String
+  email           String   @unique
+  motDePasse      String
+  role            Role     @default(client)
+  estValide       Boolean  @default(false)
+
+  creeLe          DateTime @default(now())
+  misAJourLe      DateTime @updatedAt
+  profilChefHotel ProfilChefHotel?
+}
+
+model ProfilChefHotel {
+  id                  Int      @id @default(autoincrement())
+  nom_hotel           String
+  adresse_hotel       String
+  telephone           String
+  numero_registre     String
+  email_hotel         String?
+  createdAt           DateTime @default(now())
+
+  utilisateurId       Int    @unique
+  utilisateur         Utilisateur @relation(fields: [utilisateurId], references: [id])
+}
