@@ -1,5 +1,6 @@
 import { BedDouble, Users } from "lucide-react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 interface Room {
   id: string | number;
@@ -9,6 +10,7 @@ interface Room {
 }
 
 export default function HotelRooms({ rooms }: { rooms: Room[] }) {
+  const navigate = useNavigate();
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6">
@@ -45,9 +47,9 @@ export default function HotelRooms({ rooms }: { rooms: Room[] }) {
                 </span>
                   
                 <button
-                  disabled
-                  className="px-4 py-2 rounded-xl bg-slate-900 text-yellow-500 hover:bg-slate-700 transition "
-                >
+                  onClick={() => navigate(`/reserver/${room.id}`)}
+                  className="px-4 py-2 cursor-pointer rounded-xl bg-slate-900 text-yellow-500 hover:bg-slate-700 transition "
+                >                 
                   Réserver
                 </button>
               </div>

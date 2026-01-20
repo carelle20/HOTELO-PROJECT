@@ -14,7 +14,7 @@ export default function Contact() {
     <main className="bg-slate-50">
 
       {/* HERO */}
-      <section className=" py-28 text-center px-6">
+      <section className=" py-20 text-center px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -27,7 +27,7 @@ export default function Contact() {
             </div>
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+          <h1 className="text-3xl md:text-3xl font-bold text-slate-900 mb-4">
             Contactez-nous
           </h1>
 
@@ -39,7 +39,7 @@ export default function Contact() {
       </section>
 
       {/* CONTENU */}
-      <section className="py-24 px-6 text-center lg:text-left">
+      <section className="py-4 px-6 text-center lg:text-left">
         <div className="max-w-6xl mx-auto grid gap-16 lg:grid-cols-2 text-center">
 
           {/* INFOS */}
@@ -88,7 +88,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="font-bold text-slate-700">Localisation</p>
-                  <p className="text-slate-600">Cameroun</p>
+                  <p className="text-slate-600">Yaoundé,Cameroun</p>
                 </div>
               </div>
 

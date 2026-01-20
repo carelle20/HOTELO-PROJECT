@@ -18,7 +18,7 @@ interface IconProps {
   size?: number | string;
 }
 
-/* 🔴 IMPORTANT : déclaré AVANT le composant */
+/* Déclaré AVANT le composant */
 const AMENITY_ICONS: Record<string, React.ComponentType<IconProps>> = {
   wifi: Wifi,
   parking: Car,

@@ -5,13 +5,14 @@ import { Link } from "react-router-dom";
 export default function Hero() {
   return (
     <section
+      id="hero"
       className="relative h-screen w-full bg-cover bg-center"
       style={{
-        backgroundImage: "url('public/assets/chambre-Accueil.jpg')",
+        backgroundImage: "url('/public/assets/chambre-Accueil.jpg')",
       }}
     >
       {/* Overlay */}
-      <div className="absolute inset-0" />
+      <div className="absolute inset-0 bg-[#0B1E3A]/40 backdrop-blur[2px]" />
 
       {/* Contenu */}
       <div className="relative z-10 flex h-full items-center">
@@ -63,7 +64,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.01 }}
-              className="mt-8 flex flex-wrap gap-4"
+              className="mt-8 flex flex-wrap gap-4 justify-center lg:justify-start"
             >
               <Link
                 to="/inscription"
@@ -76,7 +77,7 @@ export default function Hero() {
                 to="/discover"
                 className="inline-flex items-center justify-center px-8 py-3 text-base font-semibold rounded-lg border border-gray-200 text-slate-900 bg-white hover:bg-gray-200 hover:text-[#0B1E3A] transition"
               >
-                Explorer les hôtels
+                découvrir les hôtels
               </Link>
             </motion.div>
           </motion.div>

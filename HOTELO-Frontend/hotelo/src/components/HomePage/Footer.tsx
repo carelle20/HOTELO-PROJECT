@@ -25,39 +25,38 @@ import { Link, NavLink } from "react-router-dom";
 
 import logo from "/assets/Hotelo.png";
 
-// Couleurs de base définies dans "color" et effet hover dans "hoverColor"
 const socialLinks = [
   { 
     icon: <FaFacebookF />, 
-    url: "https://www.facebook.com/DGA", 
+    url: "https://www.facebook.com/DGC", 
     label: "Facebook", 
     color: "text-[#1877F2]", 
     hoverColor: "hover:text-[#4267B2]" 
   },
   { 
     icon: <FiX />, 
-    url: "https://x.com/DGA", 
+    url: "https://x.com/DGC", 
     label: "X", 
     color: "text-white", 
     hoverColor: "hover:text-gray-300" 
   },
   { 
     icon: <FaInstagram />, 
-    url: "https://www.instagram.com/DGA", 
+    url: "https://www.instagram.com/DGC", 
     label: "Instagram", 
     color: "text-[#E4405F]", 
     hoverColor: "hover:text-[#fd1d1d]" 
   },
   { 
     icon: <FaLinkedinIn />, 
-    url: "https://www.linkedin.com/company/DGA", 
+    url: "https://www.linkedin.com/company/DGC", 
     label: "LinkedIn", 
     color: "text-[#0A66C2]", 
     hoverColor: "hover:text-[#004182]" 
   },
   { 
     icon: <FaYoutube />, 
-    url: "https://www.youtube.com/@DGA", 
+    url: "https://www.youtube.com/@DGC", 
     label: "YouTube", 
     color: "text-[#FF0000]", 
     hoverColor: "hover:text-[#cc0000]" 
@@ -88,7 +87,7 @@ export default function Footer() {
         <div className="col-span-2">
           <NavLink to="/" className="flex items-center gap-2">
             <img src={logo} alt="HOTELO" className="h-12 w-auto object-contain" />
-            <span className="text-sm font-extrabold text-yellow-500">HOTELO</span>
+            <span className="text-sm font-extrabold text-yellow-500">HOTELO DGC</span>
           </NavLink>
 
           <p className="mt-4 text-sm text-white leading-relaxed">
@@ -97,7 +96,7 @@ export default function Footer() {
             partout au Cameroun.
           </p>
 
-          {/* Réseaux sociaux : Couleurs visibles dès le départ */}
+          {/* Réseaux sociaux */}
           <div className="flex gap-5 text-2xl mt-6">
             {socialLinks.map(({ icon, url, label, color, hoverColor }) => (
               <a
@@ -114,9 +113,9 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Colonne 1 : PLATEFORME */}
+        {/* Colonne 1 : Lien direct */}
         <div>
-          <h3 className="font-semibold text-yellow-500 mb-4 uppercase tracking-wider">Plateforme</h3>
+          <h3 className="font-semibold text-yellow-500 mb-4 uppercase tracking-wider">Raccourcis</h3>
           <ul className="space-y-3 text-sm text-white">
             <li className="flex items-center gap-3 group">
               <FiHome className="text-yellow-500 text-lg group-hover:scale-110 transition" />
@@ -128,7 +127,7 @@ export default function Footer() {
               </li>
             <li className="flex items-center gap-3 group">
               <FiMap className="text-yellow-500 text-lg group-hover:scale-110 transition" />
-              <Link to="/discover" className="hover:text-yellow-500 transition">Explorer</Link>
+              <Link to="/discover" className="hover:text-yellow-500 transition">Decouvrir</Link>
               </li>
             <li className="flex items-center gap-3 group">
               <FiSettings className="text-yellow-500 text-lg group-hover:scale-110 transition" />
@@ -137,7 +136,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Colonne 2 : SUPPORT avec icônes colorées en jaune or */}
+        {/* Colonne 2 : Assistance */}
         <div>
           <h3 className="font-semibold text-yellow-500 mb-4 uppercase tracking-wider">Support</h3>
           <ul className="space-y-3 text-sm text-white">
@@ -167,7 +166,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Colonne 3 : LÉGAL */}
+        {/* Colonne 3 : Confidentialite */}
         <div>
           <h3 className="font-semibold text-yellow-500 mb-4 uppercase tracking-wider">Légal</h3>
           <ul className="space-y-3 text-sm text-white">
@@ -192,14 +191,14 @@ export default function Footer() {
       </div>
 
       {/* Bas du footer */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-12 flex flex-col md:flex-row items-center justify-between border-t border-gray-800 pt-6 pb-8 text-xs md:text-sm text-gray-400 gap-4">
-        <span className="text-white italic">© 2026 HOTELO. Tous droits réservés.</span>
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-12 flex flex-col md:flex-row items-center justify-center border-t border-gray-800 pt-6 pb-8 text-xs md:text-sm text-gray-400 gap-4">
+        <span className="text-white italic">© 2026 HOTELO DGC. Tous droits réservés.</span>
 
-        <span className="font-extrabold text-yellow-500 tracking-widest">
-          FROM DGA
-        </span>
+        {/* <span className="font-extrabold text-yellow-500 tracking-widest">
+          FROM DGC
+        </span> */}
 
-        {/* Scroll to top amélioré */}
+        {/* Scroll to top */}
         <a
         href="#top"
         className={`fixed bottom-8 right-8 bg-yellow-500 text-slate-900 w-12 h-12 rounded-full flex justify-center items-center text-2xl shadow-2xl z-50 transition-all duration-300 hover:bg-gray-400 hover:scale-110 ${

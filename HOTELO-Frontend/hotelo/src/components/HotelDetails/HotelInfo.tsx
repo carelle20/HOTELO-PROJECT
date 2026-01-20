@@ -2,18 +2,20 @@ import { MapPin, Star } from "lucide-react";
 
 interface HotelInfoProps {
   nom: string;
-  ville: string;
+  adresse: string;
   description: string;
   note: number;
   prixMin: number;
+  prixMax: number;
 }
 
 export default function HotelInfo({
   nom,
-  ville,
+  adresse,
   description,
   note,
   prixMin,
+  prixMax,
 }: HotelInfoProps) {
   return (
     <div className="space-y-6">
@@ -24,7 +26,7 @@ export default function HotelInfo({
         <div className="flex items-center gap-3 mt-2 text-sm text-slate-600">
           <span className="flex items-center gap-1">
             <MapPin size={16} className="text-yellow-500" />
-            {ville}
+            {adresse}
           </span>
 
           <span className="flex items-center gap-1 font-semibold">
@@ -42,6 +44,12 @@ export default function HotelInfo({
         <span className="text-sm text-slate-500">À partir de</span>
         <div className="text-2xl font-bold text-slate-900">
           {prixMin.toLocaleString()} FCFA
+          <span className="text-sm font-medium text-slate-500"> / nuit</span>
+        </div>
+
+        <span className="text-sm text-slate-500">Jusqu'a</span>
+        <div className="text-2xl font-bold text-slate-900">
+          {prixMax.toLocaleString()} FCFA
           <span className="text-sm font-medium text-slate-500"> / nuit</span>
         </div>
       </div>

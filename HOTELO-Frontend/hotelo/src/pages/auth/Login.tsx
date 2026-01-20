@@ -31,7 +31,7 @@ export default function Login() {
       login(email, role);
 
       if (role === "HOTEL_MANAGER") {
-        navigate("/dashboard");
+        navigate("/manager/dashboard");
       } else {
         navigate("/dashboard");
       }
@@ -62,7 +62,7 @@ export default function Login() {
             >
               <h2 className="text-3xl font-bold mb-4 leading-tight">Bon retour parmi nous.</h2>
               <p className="text-md text-slate-100 opacity-90 border-l-4 border-yellow-400 pl-4">
-                Connectez-vous pour accéder à vos réservations et offres exclusives.
+                Connectez-vous pour accéder à vos informations.
               </p>
             </motion.div>
           </div>
@@ -78,7 +78,7 @@ export default function Login() {
         >
           <div className="text-center mb-10">
             <h1 className="text-2xl font-bold text-[#0B1E3A]">Connexion</h1>
-            <p className="text-slate-500 mt-2 font-medium">Heureux de vous revoir !</p>
+            <p className="text-slate-500 mt-2 font-medium">Accedez a votre espace personnel !</p>
           </div>
 
           {/* Affichage de l'erreur */}
@@ -167,7 +167,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full bg-yellow-400 text-[#0B1E3A] rounded-xl py-4 font-bold transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2 ${
+              className={`w-full bg-yellow-400 text-[#0B1E3A] cursor-pointer rounded-xl py-4 font-bold transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2 ${
                 isLoading ? "opacity-70 cursor-not-allowed" : "hover:bg-yellow-300"
               }`}
             >

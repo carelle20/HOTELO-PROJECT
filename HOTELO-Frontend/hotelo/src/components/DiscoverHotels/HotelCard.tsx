@@ -6,8 +6,8 @@ import { MapPin, BedDouble, Star, ChevronLeft, ChevronRight } from "lucide-react
 interface HotelCardProps {
   id: number;
   nom: string;
-  ville: string;
-  prix: number;
+  adresse: string;
+  prixMin: number;
   note: number;
   chambres: number;
   images: string[];
@@ -16,8 +16,8 @@ interface HotelCardProps {
 export default function HotelCard({
   id,
   nom,
-  ville,
-  prix,
+  adresse,
+  prixMin,
   note,
   chambres,
   images,
@@ -114,7 +114,7 @@ export default function HotelCard({
           <h3 className="text-lg font-bold text-slate-900 line-clamp-1">{nom}</h3>
           <p className="flex items-center gap-1 text-sm text-slate-500">
             <MapPin size={14} className="text-yellow-500" />
-            {ville}
+            {adresse}
           </p>
         </div>
 
@@ -128,14 +128,14 @@ export default function HotelCard({
         <div className="flex items-center justify-between pt-4 border-t border-gray-50">
           <div>
             <span className="text-xl font-bold text-slate-900">
-              {prix.toLocaleString()}
+              {prixMin.toLocaleString()}
             </span>
             <span className="text-xs text-slate-500 ml-1 font-medium italic">FCFA / nuit</span>
           </div>
 
           <button
             onClick={() => navigate(`/hotels/${id}`)}
-            className="rounded-xl bg-[#0B1E3A] text-yellow-400 px-4 py-2 text-sm font-semibold hover:bg-slate-800 transition"
+            className="cursor-pointer rounded-xl bg-[#0B1E3A] text-yellow-400 px-4 py-2 text-sm font-semibold hover:bg-slate-800 transition"
           >
             Voir détails
           </button>

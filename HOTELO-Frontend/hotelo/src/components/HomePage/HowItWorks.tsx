@@ -8,14 +8,14 @@ import {
   MessageSquarePlus,
   MessageSquareQuote,
   ScanEye,
-  CalendarClock,
+  BedDouble,
   LayoutDashboard
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function HowItWorks() {
   return (
-    <section className="bg-slate-50 py-28">
+    <section id="how-it-works" className="bg-slate-50 py-20">
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Icône + Titre */}
@@ -38,7 +38,7 @@ export default function HowItWorks() {
           </h2>
 
           <p className="text-lg text-gray-700">
-            Grace a nos interfaces simples et intuitives, publier votre hôtel ou 
+            Grâce a nos interfaces simples et intuitives, publier votre hôtel ou 
             réserver une chambre en quelques clics.
           </p>
         </motion.div>
@@ -65,7 +65,7 @@ export default function HowItWorks() {
             </div>
 
             <p className="text-gray-700 mb-8">
-              Découvrez et réservez facilement des hôtels adaptés à vos besoins.
+              Découvrez et réservez facilement dans l'hôtel adapté à vos besoins.
             </p>
 
             {/* Étapes */}
@@ -77,8 +77,8 @@ export default function HowItWorks() {
                   icon: Search,
                 },
                 {
-                  title: "Consultez les chambres disponibles",
-                  desc: "Faites votre choix parmi les chambres disponibles selon vos preferences.",
+                  title: "Consulter les chambres disponibles",
+                  desc: "Faites votre choix parmi les chambres disponibles selon vos préférences.",
                   icon: ScanEye,
                 },
                 {
@@ -87,8 +87,8 @@ export default function HowItWorks() {
                   icon: CreditCard,
                 },
                 {
-                  title: "Laissez un avis",
-                  desc: "Evaluez la qualite du sejour pour une meilleure experience.",
+                  title: "Laisser un avis",
+                  desc: "Evaluez la qualité du séjour pour une meilleure expérience.",
                   icon: MessageSquarePlus,
                 },
               ].map((step, index) => {
@@ -125,7 +125,7 @@ export default function HowItWorks() {
             </ul>
 
             <Link
-              to="/decouvrir"
+              to="/discover"
               className="inline-block w-full text-center rounded-xl bg-slate-900 text-yellow-500 py-3 font-semibold hover:bg-slate-700 transition"
             >
               Découvrir les hôtels →
@@ -151,7 +151,7 @@ export default function HowItWorks() {
             </div>
 
             <p className="text-gray-700 mb-8">
-              Gérez et développez votre établissement grâce à une solution moderne.
+              Gérez et développez votre hôtel grâce à une solution moderne.
             </p>
 
             {/* Étapes */}
@@ -159,13 +159,13 @@ export default function HowItWorks() {
               {[
                 {
                   title: "Enregistrer votre hôtel",
-                  desc: "Ajoutez les informations de l'etablissement, photos et chambres disponibles.",
+                  desc: "Ajoutez les informations de l'hôtel, photos et chambres disponibles.",
                   icon: Hotel,
                 },
                 {
-                  title: "Gérer le calendrier",
+                  title: "Gérer les chambres",
                   desc: "Mettez à jour vos tarifs et vos disponibilités en temps réel.",
-                  icon: CalendarClock,
+                  icon: BedDouble,
                 },
                 {
                   title: "Suivre les réservations",

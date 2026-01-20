@@ -138,7 +138,7 @@ export default function Register() {
               </label>
             </div>
 
-            <button type="submit" disabled={!acceptTerms} className={`w-full rounded-xl py-4 font-bold transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2 ${acceptTerms ? "bg-yellow-400 text-[#0B1E3A] hover:bg-yellow-300" : "bg-slate-200 text-slate-400 cursor-not-allowed"}`}>
+            <button type="submit" disabled={!acceptTerms} className={`w-full cursor-pointer rounded-xl py-4 font-bold transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2 ${acceptTerms ? "bg-yellow-400 text-[#0B1E3A] hover:bg-yellow-300" : "bg-slate-200 text-slate-400 cursor-not-allowed"}`}>
               S’inscrire maintenant
             </button>
           </form>

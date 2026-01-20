@@ -5,10 +5,12 @@ import hotelImage from "/assets/vue-hotel.jpg";
 
 export default function RedirectTo() {
   return (
-    <section className="relative bg-[#0B1E3A]/80 py-28 overflow-hidden bg-cover bg-center" 
-        style={{ backgroundImage: "url('src/assets/terasse-hotel.jpg')" }}>
+    <section className="relative py-20 overflow-hidden bg-cover bg-center" 
+      style={{ backgroundImage: "url('/assets/terasse-hotel.jpg')" }}>
 
-      <div className="relative max-w-7xl mx-auto px-6 bg-[#0B1E3A]/25">
+      <div className="absolute inset-0 bg-[#0B1E3A]/40 backdrop-blur[2px]" />
+
+      <div className="relative max-w-7xl mx-auto px-6 ">
         <div className="grid gap-16 md:grid-cols-2 items-center">
 
           {/* Texte */}
@@ -29,9 +31,9 @@ export default function RedirectTo() {
               Pret à commencer ?
             </motion.span>
 
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            <h2 className="text-3xl md:text-3xl font-bold text-white mb-6">
               Simplifiez la gestion de vos 
-              <span className="text-yellow-500"> réservations dès aujourd’hui</span> 
+              <span className="text-yellow-500"> réservations et vos hôtels</span> 
             </h2>
 
             <p className="text-white text-lg mb-10">
@@ -51,7 +53,7 @@ export default function RedirectTo() {
 
               <Link
                 to="/connexion"
-                className="inline-flex items-center justify-center px-8 py-3 text-base font-semibold rounded-lg border border-gray-200 text-slate-900 bg-white hover:bg-gray-200 hover:text-[#0B1E3A] transition"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3 text-base font-semibold rounded-lg border border-gray-200 text-slate-900 bg-white hover:bg-gray-200 hover:text-[#0B1E3A] transition"
               >
                 Enregistrer votre hôtel
                 <Hotel size={18} />
@@ -120,7 +122,7 @@ export default function RedirectTo() {
                     </div>
 
                     <button 
-                      className="text-sm font-semibold text-[#0B1E3A] bg-yellow-400 px-4 py-2 rounded-lg hover:bg-yellow-300 transition">
+                      className="text-sm font-semibold text-yellow-400 bg-[#0B1E3A] px-4 py-2 rounded-lg hover:bg-slate-800 transition">
                         Voir détails
                     </button>
                     </div>
