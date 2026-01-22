@@ -1,53 +1,151 @@
-import { useState } from "react";
+// src/context/AuthProvider.tsx
+import { useState, useCallback } from "react";
+import type { ReactNode } from "react";
 import { AuthContext } from "./auth.context";
-import type{ User, UserRole } from "./auth.types";
+import type { User, LoginResponse, RegisterData } from "./auth.types";
+import { motion, AnimatePresence } from "framer-motion";
+import { Key, Copy, Check, X } from "lucide-react";
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(() => {
-    const storedUser = localStorage.getItem("auth_user");
-    return storedUser ? JSON.parse(storedUser) : null;
+    const savedUser = localStorage.getItem("hotelo_user");
+    const token = localStorage.getItem("hotelo_token");
+    if (savedUser && token) {
+      try {
+        return JSON.parse(savedUser) as User;
+      } catch {
+        return null;
+      }
+    }
+    return null;
   });
 
-  const login = (email: string, role: UserRole) => {
-    const fakeUser: User = {
-      id: Date.now(),
-      nom: role === "HOTEL_MANAGER" ? "Responsable Hôtel" : "Client",
-      email,
-      role,
-    };
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [tempPassword, setTempPassword] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
-    setUser(fakeUser);
-    localStorage.setItem("auth_user", JSON.stringify(fakeUser));
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
-  const register = (nom: string, email: string, role: UserRole) => {
-    const newUser: User = {
-      id: Date.now(),
-      nom,
-      email,
-      role,
-    };
+  // Fonction pour la connexion
+  const login = async (email: string, motDePasse: string): Promise<LoginResponse> => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/connexion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, motDePasse }),
+      });
 
-    setUser(newUser);
-    localStorage.setItem("auth_user", JSON.stringify(newUser));
+      const data: LoginResponse = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.message || "Identifiants incorrects");
+      }
+
+      localStorage.setItem("hotelo_token", data.token);
+      localStorage.setItem("hotelo_user", JSON.stringify(data.user));
+      setUser(data.user);
+
+      if (data.nouveauMdpAuto) {
+        setTempPassword(data.nouveauMdpAuto);
+      }
+
+      return data;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const logout = () => {
+  //fonction pour l'inscription
+  const register = async (formData: RegisterData): Promise<void> => {
+    const response = await fetch("http://localhost:5000/api/auth/inscription", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+    if (!data.success) {
+      throw new Error(data.message || "Erreur lors de l'inscription");
+    }
+  };
+
+  // Fonction pour la déconnexion
+  const logout = useCallback(() => {
+    localStorage.removeItem("hotelo_token");
+    localStorage.removeItem("hotelo_user");
     setUser(null);
-    localStorage.removeItem("auth_user");
-  };
+    window.location.href = "/connexion";
+  }, []);
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isAuthenticated: !!user,
-        login,
-        register,
-        logout,
+    <AuthContext.Provider 
+      value={{ 
+        user, 
+        isAuthenticated: !!user, 
+        isLoading, 
+        login, 
+        register, 
+        logout
       }}
     >
       {children}
+
+      <AnimatePresence>
+        {tempPassword && (
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-[#0B1E3A]/60 backdrop-blur-sm">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="bg-white rounded-[2rem] p-8 max-w-sm w-full shadow-2xl border border-slate-100 relative"
+            >
+              <button 
+                onClick={() => setTempPassword(null)}
+                className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full transition-colors"
+                aria-label="Fermer"
+              >
+                <X size={20} className="text-slate-400" />
+              </button>
+
+              <div className="text-center">
+                <div className="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <Key className="text-yellow-600" size={32} />
+                </div>
+                
+                <h3 className="text-xl font-black text-[#0B1E3A] mb-2">Sécurité Renforcée</h3>
+                <p className="text-slate-500 text-sm mb-6">
+                  Ceci est votre mot de passe définitif. Veuillez le copier et le conserver précieusement.
+                </p>
+
+                <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl p-4 flex items-center justify-between mb-8">
+                  <span className="font-mono text-xl font-bold text-[#0B1E3A] tracking-wider">
+                    {tempPassword}
+                  </span>
+                  <button 
+                    onClick={() => copyToClipboard(tempPassword)}
+                    className="p-2 hover:bg-white rounded-lg shadow-sm transition-all"
+                    type="button"
+                  >
+                    {copied ? <Check className="text-green-500" size={20} /> : <Copy className="text-slate-400" size={20} />}
+                  </button>
+                </div>
+
+                <button 
+                  onClick={() => setTempPassword(null)}
+                  className="w-full bg-[#0B1E3A] text-yellow-400 py-4 rounded-xl font-bold hover:shadow-lg transition-all active:scale-95"
+                >
+                  J'ai bien noté
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </AuthContext.Provider>
   );
-}
+};

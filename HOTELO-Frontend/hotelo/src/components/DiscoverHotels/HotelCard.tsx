@@ -5,8 +5,10 @@ import { MapPin, BedDouble, Star, ChevronLeft, ChevronRight } from "lucide-react
 
 interface HotelCardProps {
   id: number;
+  pays: string;
   nom: string;
-  adresse: string;
+  ville: string;
+  quartier: string;
   prixMin: number;
   note: number;
   chambres: number;
@@ -15,8 +17,10 @@ interface HotelCardProps {
 
 export default function HotelCard({
   id,
+  pays,
   nom,
-  adresse,
+  ville,
+  quartier,
   prixMin,
   note,
   chambres,
@@ -114,7 +118,7 @@ export default function HotelCard({
           <h3 className="text-lg font-bold text-slate-900 line-clamp-1">{nom}</h3>
           <p className="flex items-center gap-1 text-sm text-slate-500">
             <MapPin size={14} className="text-yellow-500" />
-            {adresse}
+            {ville}, {quartier} | {pays}
           </p>
         </div>
 

@@ -1,12 +1,14 @@
 ﻿export const hotels = [
   {
     id: 1,
+    pays: "Cameroun",
     nom: "Hôtel Atlantique",
-    adresse: "Douala, Akwa - Boulevard de la Liberté", // Remplacement de ville par adresse
+    ville: "Douala",
+    quartier: "Akwa - Boulevard de la Liberté",
     description: "Situé au cœur de Douala, l’Hôtel Atlantique vous offre confort, élégance et services haut de gamme avec une vue imprenable sur le Wouri.",
     note: 4.6,
-    prixMin: 45000, // Mise à jour prix
-    prixMax: 85000, // Mise à jour prix
+    prixMin: 45000,
+    prixMax: 85000,
     chambres: 25,
     latitude: 4.0511,
     longitude: 9.7679,
@@ -50,8 +52,10 @@
   },
   {
     id: 2,
+    pays: "Cameroun",
     nom: "Résidence Bleu Azur",
-    adresse: "Yaoundé, Bastos - Rue de l'ambassade",
+    ville: "Yaoundé",
+    quartier: "Bastos - Rue de l'ambassade",
     description: "Un havre de paix situé dans les quartiers résidentiels de Yaoundé, idéal pour les voyages d'affaires et la détente.",
     note: 4.3,
     prixMin: 38000,
@@ -76,8 +80,10 @@
   },
   {
     id: 3,
+    pays: "Cameroun",
     nom: "Hôtel Prestige",
-    adresse: "Bafoussam, Quartier Tamdja",
+    ville: "Bafoussam",
+    quartier:"Tamdja",
     description: "Découvrez l'hospitalité de l'Ouest dans un cadre moderne et chaleureux, avec une cuisine locale raffinée.",
     note: 4.1,
     prixMin: 30000,
@@ -102,8 +108,10 @@
   },
   {
     id: 4,
+    pays: "Cameroun",
     nom: "Complexe Royal Palace",
-    adresse: "Kribi, Zone Plage - Boulevard de l'Océan",
+    ville: "Kribi",
+    quartier: "Zone Plage - Boulevard de l'Océan",
     description: "Évadez-vous dans ce joyau situé en bordure de mer. Pieds dans l'eau, luxe et sérénité garantis.",
     note: 4.8,
     prixMin: 60000,

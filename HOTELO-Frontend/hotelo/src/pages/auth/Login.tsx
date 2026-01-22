@@ -1,11 +1,10 @@
+//src/pages/auth/Login.tsx
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../../context/useAuth";
 import { Mail, Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
 import loginHotel from "/assets/login-hotel.jpg";
-
-type UserRole = "CLIENT" | "HOTEL_MANAGER";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -14,7 +13,6 @@ export default function Login() {
   // États du formulaire
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<UserRole>("CLIENT");
   
   // États d'interface
   const [showPassword, setShowPassword] = useState(false);
@@ -27,33 +25,39 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 800));
-      login(email, role);
+      const data = await login(email, password);
 
-      if (role === "HOTEL_MANAGER") {
+      const userRole = data.user.role;
+
+      if (userRole === "super_admin" || userRole === "admin") {
+        navigate("/admin/dashboard");
+      } else if (userRole === "chef_hotel") {
         navigate("/manager/dashboard");
       } else {
-        navigate("/dashboard");
+        navigate("/");
       }
-    } catch {
-      setError("Identifiants incorrects. Veuillez réessayer.");
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Une erreur inattendue est survenue.");
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    // Conteneur principal avec padding pour détacher du header/footer
-    <div className="flex-1 flex flex-col lg:flex-row w-full bg-slate-50/50 p-4 md:p-8 gap-6 md:gap-12 items-center justify-center">
+    <div className="flex-1 flex flex-col lg:flex-row w-full bg-slate-200/50 p-4 md:p-8 gap-6 md:gap-12 items-center justify-center">
       
       {/* SECTION IMAGE */}
-      <div className="hidden lg:block lg:w-1/3 h-[500px] relative overflow-hidden rounded-[1.5rem] shadow-xl self-center">
+      <div className="hidden lg:block lg:w-1/3 h-[400px] relative overflow-hidden rounded-[1.5rem] shadow-xl self-center">
         <img 
           src={loginHotel}
           alt="Lobby d'hôtel luxueux" 
           className="absolute inset-0 w-full h-full object-cover transform hover:scale-105 transition-transform duration-1000"
         />
-        <div className="absolute inset-0 bg-[#0B1E3A]/40 backdrop-blur-[1px] flex items-center justify-center p-8">
+        <div className="absolute inset-0 bg-[#0B1E3A]/30 backdrop-blur-[1px] flex items-center justify-center p-8">
           <div className="max-w-md text-white">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -130,7 +134,7 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full rounded-xl border border-slate-200 pl-11 pr-12 py-3 focus:ring-2 focus:ring-yellow-400 outline-none transition bg-white"
-                  placeholder="••••••••"
+                  placeholder="........"
                 />
                 <button 
                   type="button"
@@ -139,27 +143,6 @@ export default function Login() {
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
-              </div>
-            </div>
-
-            {/* Sélecteur de rôle */}
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-3 ml-1">
-                Se connecter en tant que : <span className="text-red-500">*</span>
-              </label>
-              <div className="grid grid-cols-2 gap-3 bg-slate-100 p-1.5 rounded-2xl">
-                <button
-                  type="button" onClick={() => setRole("CLIENT")}
-                  className={`py-2.5 rounded-xl text-sm font-bold transition-all ${
-                    role === "CLIENT" ? "bg-[#0B1E3A] text-yellow-400 shadow-sm" : "text-slate-500"
-                  }`}
-                >Client</button>
-                <button
-                  type="button" onClick={() => setRole("HOTEL_MANAGER")}
-                  className={`py-2.5 rounded-xl text-sm font-bold transition-all ${
-                    role === "HOTEL_MANAGER" ? "bg-[#0B1E3A] text-yellow-400 shadow-sm" : "text-slate-500"
-                  }`}
-                >Hôtelier</button>
               </div>
             </div>
 

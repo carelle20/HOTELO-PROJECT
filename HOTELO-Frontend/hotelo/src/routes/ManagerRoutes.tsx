@@ -1,10 +1,12 @@
 import { Route } from "react-router-dom";
 import HotelManagerLayout from "../layouts/HotelManagerLayout";
 import DashboardPage from "../pages/hotel-manager/DashboardPage";
+import MesHotelsPage from "../pages/hotel-manager/MonHotelPage";
 
 
 export const ManagerRoutes = (
   <Route path="/manager" element={<HotelManagerLayout />}>
     <Route path="dashboard" element={<DashboardPage />} />
+    <Route path="hotels" element={<MesHotelsPage />} />
   </Route>
 );

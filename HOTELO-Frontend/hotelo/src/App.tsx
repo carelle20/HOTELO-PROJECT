@@ -18,10 +18,12 @@ import Login from "./pages/auth/Login";
 // import CreateHotel from "./pages/hotels/CreateHotel";
 // import MyHotels from "./pages/hotels/MyHotels";
 import Reservation from "./pages/Reserver";
+import { Toaster } from "sonner";
 
 export default function App() {
   return (
     <BrowserRouter>
+      <Toaster position="top-right" richColors closeButton />
       <Routes>
         {/* PAGES AVEC LE MAINLAYOUT */}
         <Route path="/" element={<MainLayout><HomePage /></MainLayout>} />

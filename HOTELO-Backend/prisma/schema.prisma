@@ -1,3 +1,5 @@
+// prisma/schema.prisma
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,28 +17,28 @@ enum Role {
 }
 
 model Utilisateur {
-  id              Int      @id @default(autoincrement())
-  prenom          String
-  nom             String
-  email           String   @unique
-  motDePasse      String
-  role            Role     @default(client)
-  estValide       Boolean  @default(false)
-
-  creeLe          DateTime @default(now())
-  misAJourLe      DateTime @updatedAt
-  profilChefHotel ProfilChefHotel?
+  idUtilisateur     Int              @id @default(autoincrement())
+  prenom            String
+  nom               String
+  email             String           @unique
+  motDePasse        String
+  role              Role             @default(client)
+  estValide         Boolean          @default(false)
+  premiereConnexion Boolean          @default(true) 
+  creeLe            DateTime         @default(now())
+  misAJourLe        DateTime         @updatedAt
+  profilChefHotel   ProfilChefHotel?
 }
 
 model ProfilChefHotel {
-  id                  Int      @id @default(autoincrement())
+  id_profilChefHotel  Int          @id @default(autoincrement())
   nom_hotel           String
   adresse_hotel       String
   telephone           String
   numero_registre     String
   email_hotel         String?
-  createdAt           DateTime @default(now())
+  createdAt           DateTime     @default(now())
 
-  utilisateurId       Int    @unique
-  utilisateur         Utilisateur @relation(fields: [utilisateurId], references: [id])
+  utilisateurId       Int          @unique
+  utilisateur         Utilisateur  @relation(fields: [utilisateurId], references: [idUtilisateur])
 }
