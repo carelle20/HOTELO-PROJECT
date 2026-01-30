@@ -9,6 +9,7 @@ export interface User {
   email: string;
   role: UserRole;
   estChefHotel?: boolean;
+  estValide?: boolean;
 }
 
 // Interface pour les données reçues après une connexion réussie
@@ -20,7 +21,7 @@ export interface LoginResponse {
   message?: string;
 }
 
-// Interface pour les données d'inscription (permet d'envoyer les champs hôtel)
+// Interface pour les données d'inscription
 export interface RegisterData {
   prenom: string;
   nom: string;
@@ -30,16 +31,14 @@ export interface RegisterData {
   nomHotel?: string;
   adresseHotel?: string;
   telephone?: string;
-  numeroRegistre?: string;
-  emailHotel?: string;
 }
 
 export interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  // On remplace "any" par les interfaces précises
   login: (email: string, motDePasse: string) => Promise<LoginResponse>;
   register: (data: RegisterData) => Promise<void>;
   logout: () => void;
+  refreshUser: () => Promise<void>;
 }

@@ -35,8 +35,6 @@ model ProfilChefHotel {
   nom_hotel           String
   adresse_hotel       String
   telephone           String
-  numero_registre     String
-  email_hotel         String?
   createdAt           DateTime     @default(now())
 
   utilisateurId       Int          @unique

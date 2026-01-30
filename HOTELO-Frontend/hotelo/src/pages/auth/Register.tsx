@@ -6,7 +6,7 @@ import { useAuth } from "../../context/useAuth";
 import type { RegisterData } from "../../context/auth.types";
 import { 
   User, Mail, Lock, Eye, EyeOff, CheckCircle2, 
-  XCircle, Check, Hotel, MapPin, Phone, FileText 
+  XCircle, Check, Hotel, MapPin, Phone
 } from "lucide-react";
 import registerHotel from "/assets/register-hotel.jpg";
 import { toast } from "sonner";
@@ -23,9 +23,7 @@ export default function Register() {
     role: "client",
     nomHotel: "",
     adresseHotel: "",
-    telephone: "",
-    numeroRegistre: "",
-    emailHotel: ""
+    telephone: ""
   });
 
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -34,33 +32,7 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
 
-  const playSuccessSound = (): void => {
-      try {
-        const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-        if (!AudioContextClass) return;
-
-        const context = new AudioContextClass();
-        const oscillator = context.createOscillator();
-        const gainNode = context.createGain();
-
-        oscillator.type = "sine";
-        oscillator.frequency.setValueAtTime(523.25, context.currentTime); // Note C5
-        oscillator.frequency.exponentialRampToValueAtTime(880, context.currentTime + 0.1); // Slide vers A5
-
-        gainNode.gain.setValueAtTime(0.1, context.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 0.4);
-
-        oscillator.connect(gainNode);
-        gainNode.connect(context.destination);
-
-        oscillator.start();
-        oscillator.stop(context.currentTime + 0.4);
-      } catch (e) {
-        console.error("Audio non supporté", e);
-      }
-  };
-
-  // --- VALIDATION DU MOT DE PASSE EN TEMPS RÉEL ---
+  // CRITERES  DE VALIDATION DU MOT DE PASSE
   const passwordValidation = useMemo(() => {
     const p = formData.motDePasse;
     return {
@@ -94,7 +66,6 @@ export default function Register() {
     setIsLoading(true);
     try {
       await register(formData);
-      playSuccessSound();
       
       const isHotel = formData.role === "chef_hotel";
       toast.success("Inscription réussie !", {
@@ -106,7 +77,7 @@ export default function Register() {
       // Redirection après le toast
       setTimeout(() => {
         navigate("/connexion");
-      }, 2500);
+      }, 2000);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Une erreur inconnue est survenue";
       setError(message);
@@ -181,7 +152,7 @@ export default function Register() {
               <label className="block text-xs font-black text-slate-700 mb-1.5 ml-1 uppercase tracking-wider">Email<span className="text-red-500">*</span></label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                <input name="email" type="email" required onChange={handleChange} className="w-full rounded-xl border border-slate-200 pl-11 pr-4 py-3 focus:ring-2 focus:ring-yellow-400 outline-none transition text-sm" placeholder="exemple@hotelo.cm" />
+                <input name="email" type="email" required onChange={handleChange} className="w-full rounded-xl border border-slate-200 pl-11 pr-4 py-3 focus:ring-2 focus:ring-yellow-400 outline-none transition text-sm" placeholder="exemple@hotelo.com" />
               </div>
             </div>
 
@@ -205,14 +176,14 @@ export default function Register() {
                       <label className="block text-[11px] font-black text-slate-700 mb-1.5 ml-1 uppercase tracking-wider">Nom de l'Hôtel <span className="text-red-500">*</span></label>
                       <div className="relative">
                         <Hotel className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                        <input name="nomHotel" required onChange={handleChange} className="w-full rounded-xl border border-slate-200 pl-10 pr-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Ex: Hilton Douala" />
+                        <input name="nomHotel" required onChange={handleChange} className="w-full rounded-xl border border-slate-200 pl-10 pr-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Ex: Hilton" />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-[11px] font-black text-slate-700 mb-1.5 ml-1 uppercase tracking-wider">N° Registre Commerce <span className="text-red-500">*</span></label>
+                      <label className="block text-[11px] font-black text-slate-700 mb-1.5 ml-1 uppercase tracking-wider">Numéro de Téléphone <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <FileText className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                        <input name="numeroRegistre" required onChange={handleChange} className="w-full rounded-xl border border-slate-200 pl-10 pr-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-yellow-400" placeholder="RC/DLA/..." />
+                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                        <input name="telephone" required onChange={handleChange} className="w-full rounded-xl border border-slate-200 pl-10 pr-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-yellow-400" placeholder="6XX XXX XXX" />
                       </div>
                     </div>
                   </div>
@@ -222,20 +193,6 @@ export default function Register() {
                     <div className="relative">
                       <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                       <input name="adresseHotel" required onChange={handleChange} className="w-full rounded-xl border border-slate-200 pl-10 pr-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Ville, Quartier, Rue" />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[11px] font-black text-slate-700 mb-1.5 ml-1 uppercase tracking-wider">Téléphone Pro <span className="text-red-500">*</span></label>
-                      <div className="relative">
-                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                        <input name="telephone" required onChange={handleChange} className="w-full rounded-xl border border-slate-200 pl-10 pr-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-yellow-400" placeholder="6XX XXX XXX" />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-[11px] font-black text-slate-700 mb-1.5 ml-1 uppercase tracking-wider">Email de l'Hôtel <span className="text-red-500">*</span></label>
-                      <input name="emailHotel" type="email" required onChange={handleChange} className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-yellow-400" placeholder="contact@hotel.com" />
                     </div>
                   </div>
                 </motion.div>
@@ -274,7 +231,7 @@ export default function Register() {
             <div className="flex items-start gap-3 px-1">
               <input id="terms" type="checkbox" checked={acceptTerms} onChange={(e) => setAcceptTerms(e.target.checked)} className="w-4 h-4 mt-0.5 text-[#0B1E3A] border-slate-300 rounded focus:ring-yellow-400 cursor-pointer" />
               <label htmlFor="terms" className="text-[11px] text-slate-500 leading-tight cursor-pointer">
-                J'accepte les <Link to="/terms" className="text-[#0B1E3A] font-bold hover:underline tracking-tight">Conditions Générales d'Utilisation</Link> <span className="text-red-500">*</span>
+                J'accepte les <Link to="/terms" className="text-[#0B1E3A] font-bold hover:underline tracking-tight">Conditions Générales d'Utilisation</Link> et la <Link to="/privacy" className="text-[#0B1E3A] font-bold hover:underline tracking-tight">Politique de Confidentialité</Link> <span className="text-red-500">*</span>
               </label>
             </div>
 

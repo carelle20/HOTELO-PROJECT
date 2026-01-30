@@ -11,14 +11,9 @@ import HotelDetails from "./pages/HotelsDetails";
 import Contact from "./pages/Contact";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
-// import ProtectedRoute from "./routes/ProtectedRoute";
-// import RoleRoute from "./routes/RoleRoute";
-// import Dashboard from "./pages/dashboard/Dashboard";
-// import DashboardLayout from "./layouts/DashboardLayout";
-// import CreateHotel from "./pages/hotels/CreateHotel";
-// import MyHotels from "./pages/hotels/MyHotels";
 import Reservation from "./pages/Reserver";
 import { Toaster } from "sonner";
+import { AdminRoutes } from "./routes/AdminRoutes";
 
 export default function App() {
   return (
@@ -34,14 +29,15 @@ export default function App() {
         <Route path="/hotels/:id" element={<MainLayout><HotelDetails /></MainLayout>} />
         <Route path="/reserver/:id" element={<MainLayout><Reservation /></MainLayout>} />
 
-        {/* PAGES AVEC LE LAYOUT AUTHENTIFICATION (AUTHLAYOUT) */}
+        {/* PAGES AVEC LE AUTHLAYOUT */}
         <Route path="/connexion" element={<AuthLayout><Login /></AuthLayout>} />
         <Route path="/inscription" element={<AuthLayout><Register /></AuthLayout>} />
 
         {/* ROUTES HOTEL MANAGER */}
         {ManagerRoutes}
 
-        {/* DASHBOARD */}
+        {/* ROUTES ADMIN */}
+        {AdminRoutes}
         
 
       </Routes>

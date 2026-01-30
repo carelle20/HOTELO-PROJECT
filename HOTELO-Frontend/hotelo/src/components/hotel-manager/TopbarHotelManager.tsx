@@ -8,18 +8,21 @@ import {
   HelpCircle,
   LogOut,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/useAuth";
 
 export default function Header() {
   const [openProfile, setOpenProfile] = useState(false);
+  const { user, logout } = useAuth(); // Récupération des données réelles
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/connexion");
+  };
 
   return (
     <header className="h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between">
-      {/* Left: Page title */}
-      <h1 className="text-lg font-semibold text-gray-800">
-        Vue d’ensemble
-      </h1>
-
       {/* Center: Search */}
       <div className="hidden md:flex flex-1 justify-center px-6">
         <div className="relative w-full max-w-md">
@@ -48,60 +51,70 @@ export default function Header() {
           <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
         </button>
 
-        {/* Profile */}
-        <div className="relative">
-          <button
-            onClick={() => setOpenProfile(!openProfile)}
-            className="flex items-center gap-3"
-          >
-            <div className="w-9 h-9 rounded-full bg-[#F4B400] flex items-center justify-center text-[#0B1E3A] font-bold">
-              RH
+        {/* Profile avec détection de survol (Hover) */}
+        <div 
+          className="relative"
+          onMouseEnter={() => setOpenProfile(true)}
+          onMouseLeave={() => setOpenProfile(false)}
+        >
+          <button className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-[#F4B400] flex items-center justify-center text-[#0B1E3A] font-bold uppercase">
+              {/* Initiales dynamiques avec fallback */}
+              {user ? `${user.prenom[0]}${user.nom[0]}` : "RH"}
             </div>
 
             <div className="hidden md:block text-left">
               <p className="text-sm font-medium text-gray-800">
-                Responsable Hôtel
+                {user ? `${user.prenom} ${user.nom}` : "Responsable Hôtel"}
               </p>
               <p className="text-xs text-gray-500">
-                manager@hotelo.cm
+                {user?.email || "manager@hotelo.cm"}
               </p>
             </div>
 
-            <ChevronDown size={18} className="text-gray-500" />
+            <ChevronDown 
+              size={18} 
+              className={`text-gray-500 transition-transform ${openProfile ? 'rotate-180' : ''}`} 
+            />
           </button>
 
           {/* Dropdown menu */}
           {openProfile && (
-            <div className="absolute right-0 mt-3 w-56 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden z-50">
-              <Link
-                to="/manager/profile"
-                className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
-              >
-                <User size={16} />
-                Mon profil
-              </Link>
+            <div className="absolute right-0 mt-0 pt-3 w-56 z-50"> 
+              <div className="bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                <Link
+                  to="/manager/profile"
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <User size={16} />
+                  Mon profil
+                </Link>
 
-              <Link
-                to="/manager/settings"
-                className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
-              >
-                <Settings size={16} />
-                Paramètres
-              </Link>
+                <Link
+                  to="/manager/settings"
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <Settings size={16} />
+                  Paramètres
+                </Link>
 
-              <Link
-                to="/manager/help"
-                className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
-              >
-                <HelpCircle size={16} />
-                Aide & support
-              </Link>
+                <Link
+                  to="/manager/help"
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <HelpCircle size={16} />
+                  Aide & support
+                </Link>
 
-              <div className="border-t border-gray-200">
-                <button className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50">
-                  <LogOut size={16} />
-                  Déconnexion
-                </button>
+                <div className="border-t border-gray-200">
+                  <button 
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50"
+                  >
+                    <LogOut size={16} />
+                    Déconnexion
+                  </button>
+                </div>
               </div>
             </div>
           )}

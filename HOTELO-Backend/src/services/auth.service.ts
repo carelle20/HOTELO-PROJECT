@@ -1,10 +1,10 @@
 import bcrypt from "bcrypt";
-import prisma from "../../prisma/client";
+import prisma from "../prisma/client";
 import jwt from "jsonwebtoken";
 
 export class AuthService {
   static async inscription(data: any) {
-    const { prenom, nom, email, motDePasse, role, nomHotel, adresseHotel, telephone, numeroRegistre, emailHotel } = data;
+    const { prenom, nom, email, motDePasse, role, nomHotel, adresseHotel, telephone } = data;
     const motDePasseHash = await bcrypt.hash(motDePasse, 10);
 
     return await prisma.$transaction(async (tx) => {
@@ -19,7 +19,7 @@ export class AuthService {
       });
 
       if (role === "chef_hotel") {
-        if (!nomHotel || !adresseHotel || !telephone || !numeroRegistre) {
+        if (!nomHotel || !adresseHotel || !telephone) {
           throw new Error("Informations d'hôtel incomplètes.");
         }
         await tx.profilChefHotel.create({
@@ -27,8 +27,6 @@ export class AuthService {
             nom_hotel: nomHotel,
             adresse_hotel: adresseHotel,
             telephone,
-            numero_registre: numeroRegistre,
-            email_hotel: emailHotel || null,
             utilisateurId: utilisateur.idUtilisateur,
           },
         });
@@ -72,7 +70,7 @@ export class AuthService {
     let mdpTemporaireGenere = null;
 
     if (user.premiereConnexion && user.role === 'admin') {
-      mdpTemporaireGenere = Math.random().toString(36).slice(-10).toUpperCase();
+      mdpTemporaireGenere = Math.random().toString(36).slice(-10);
       const hashedB = await bcrypt.hash(mdpTemporaireGenere, 10);
       await prisma.utilisateur.update({
         where: { idUtilisateur: user.idUtilisateur },
@@ -88,7 +86,7 @@ export class AuthService {
 
     return {
       token,
-      user: { id: user.idUtilisateur, email: user.email, role: user.role, prenom: user.prenom, nom: user.nom, estChefHotel: !!user.profilChefHotel },
+      user: { id: user.idUtilisateur, email: user.email, role: user.role, prenom: user.prenom, nom: user.nom, estValide: user.estValide, estChefHotel: !!user.profilChefHotel },
       nouveauMdpAuto: mdpTemporaireGenere 
     };
   }
@@ -103,5 +101,12 @@ export class AuthService {
       data: { estValide: true },
       select: { idUtilisateur: true, email: true, estValide: true }
     });
+  }
+
+  static async userProfile (userId: number) {
+    const user = await prisma.utilisateur.findUnique({
+      where: { idUtilisateur: userId }
+    });
+    return user;
   }
 }

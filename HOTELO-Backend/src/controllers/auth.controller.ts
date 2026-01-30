@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { AuthService } from "./auth.service";
+import { AuthService } from "../services/auth.service";
 
 export class AuthController {
+  // INSCRIPTION
   static async inscription(req: Request, res: Response) {
     try {
       const result = await AuthService.inscription(req.body);
@@ -11,6 +12,7 @@ export class AuthController {
     }
   }
 
+  // CREER ADMINISTRATEUR
   static async creerAdministrateur(req: Request, res: Response) {
     try {
       const result = await AuthService.creerAdministrateur(req.body);
@@ -20,6 +22,7 @@ export class AuthController {
     }
   }
 
+  // CONNEXION
   static async connexion(req: Request, res: Response) {
     try {
       const { email, motDePasse } = req.body;
@@ -30,7 +33,7 @@ export class AuthController {
     }
   }
 
-  // J'ajoute la méthode ici pour que le contrôleur soit complet par rapport à la route
+  // VALIDER HOTELIER
   static async validerHotelier(req: Request, res: Response) {
     try {
       const { id } = req.params as { id: string }; 
@@ -47,6 +50,36 @@ export class AuthController {
       return res.status(400).json({ 
         success: false, 
         message: error.message 
+      });
+    }
+  }
+
+  // PROFILE
+  static async profile(req: Request, res: Response) {
+    try {
+      // 1. Récupérer l'ID depuis le middleware d'auth (req.user)
+      const userId = (req as any).user?.id;
+      if (!userId) {
+        return res.status(401).json({ 
+          success: false, 
+          message: "Utilisateur non authentifié" 
+        });
+      }
+      // 2. Appeler le service pour avoir les données à jour
+      const user = await AuthService.userProfile(Number(userId));
+      if (!user) {
+        return res.status(404).json({ 
+          success: false, 
+          message: "Utilisateur introuvable" 
+        });
+      }
+      // 3. Renvoyer l'utilisateur (estValide sera maintenant présent)
+      return res.status(200).json(user);
+    } catch (error: any) {
+      console.error("Erreur Profile Controller:", error.message);
+      return res.status(500).json({ 
+        success: false, 
+        message: "Erreur lors de la récupération du profil" 
       });
     }
   }

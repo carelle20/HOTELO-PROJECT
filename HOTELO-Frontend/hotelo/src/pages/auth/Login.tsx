@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "../../context/useAuth";
 import { Mail, Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
 import loginHotel from "/assets/login-hotel.jpg";
+import { toast } from "sonner";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -26,19 +27,22 @@ export default function Login() {
 
     try {
       const data = await login(email, password);
+      toast.success(`Bienvenue, ${data.user.nom} ${data.user.prenom} !`);
 
       const userRole = data.user.role;
 
-      if (userRole === "super_admin" || userRole === "admin") {
-        navigate("/admin/dashboard");
-      } else if (userRole === "chef_hotel") {
-        navigate("/manager/dashboard");
-      } else {
-        navigate("/");
-      }
+      setTimeout(() => {
+        if (userRole === "super_admin" || userRole === "admin") {
+          navigate("/admin/dashboard");
+        } else if (userRole === "chef_hotel") {
+          navigate("/manager/dashboard");
+        } else {
+          navigate("/");
+        }
+      }, 1000);
     } catch (err) {
       if (err instanceof Error) {
-        setError(err.message);
+        toast.error("Erreur de connexion : ", {description: err.message});
       } else {
         setError("Une erreur inattendue est survenue.");
       }
@@ -54,7 +58,7 @@ export default function Login() {
       <div className="hidden lg:block lg:w-1/3 h-[400px] relative overflow-hidden rounded-[1.5rem] shadow-xl self-center">
         <img 
           src={loginHotel}
-          alt="Lobby d'hôtel luxueux" 
+          alt="Hôtel luxueux" 
           className="absolute inset-0 w-full h-full object-cover transform hover:scale-105 transition-transform duration-1000"
         />
         <div className="absolute inset-0 bg-[#0B1E3A]/30 backdrop-blur-[1px] flex items-center justify-center p-8">
@@ -82,7 +86,7 @@ export default function Login() {
         >
           <div className="text-center mb-10">
             <h1 className="text-2xl font-bold text-[#0B1E3A]">Connexion</h1>
-            <p className="text-slate-500 mt-2 font-medium">Accedez a votre espace personnel !</p>
+            <p className="text-slate-500 mt-2 font-medium">Accedez à votre espace personnel !</p>
           </div>
 
           {/* Affichage de l'erreur */}
@@ -134,7 +138,7 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full rounded-xl border border-slate-200 pl-11 pr-12 py-3 focus:ring-2 focus:ring-yellow-400 outline-none transition bg-white"
-                  placeholder="........"
+                  placeholder="••••••••"
                 />
                 <button 
                   type="button"
