@@ -20,7 +20,7 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     // On récupère le token stocké lors du login
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("hotelo_token");
     
     // Si le token existe, on l'ajoute dans les headers (Authorization: Bearer ...)
     if (token && config.headers) {
@@ -45,7 +45,7 @@ api.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       console.warn("Session expirée ou non autorisée");
     //   Optionnel : déconnecter l'utilisateur ou rediriger vers /connexion
-      localStorage.removeItem("token");
+      localStorage.removeItem("hotelo_token");
       window.location.href = "/connexion";
     }
     return Promise.reject(error);

@@ -1,213 +1,160 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Filter } from "lucide-react";
-import { useEffect, useState, useMemo } from "react";
-
+import { Filter } from "lucide-react";
+import { useState, useMemo } from "react";
 import HotelCard from "../components/DiscoverHotels/HotelCard";
 import HotelCardSkeleton from "../components/DiscoverHotels/HotelCardSkeleton";
-import { hotels } from "../data/hotels.mock";
+import { useHotels } from "../hooks";
 
 export default function DiscoverHotels() {
-  const [loading, setLoading] = useState(true);
+  const { hotels, loading, error } = useHotels();
   
   // États pour les filtres
   const [countryTerm, setCountryTerm] = useState(""); 
-  const [searchTerm, setSearchTerm] = useState(""); // Nom de l'hôtel
-  const [cityTerm, setCityTerm] = useState(""); // Ville
-  const [quatarterTerm, setQuarterTerm] = useState(""); // Quartier
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [cityTerm, setCityTerm] = useState(""); 
+  const [quatarterTerm, setQuarterTerm] = useState(""); 
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Logique de filtrage dynamique mise à jour
   const filteredHotels = useMemo(() => {
     return hotels.filter((hotel) => {
-      // 1. Recherche par Pays
-      const matchesCountry = hotel.pays.toLowerCase().includes(countryTerm.toLowerCase());
-      // 2. Recherche par Nom
-      const matchesName = hotel.nom.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      // 3. Recherche par Ville 
-      const matchesCity = hotel.ville.toLowerCase().includes(cityTerm.toLowerCase());
+      const matchesCountry = (hotel.pays || "").toLowerCase().includes(countryTerm.toLowerCase());
+      const matchesName = (hotel.nom || "").toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCity = (hotel.ville || "").toLowerCase().includes(cityTerm.toLowerCase());
+      const matchesQuarter = (hotel.adresse || "").toLowerCase().includes(quatarterTerm.toLowerCase());
 
-      // 4. Recherche par Quartier
-      const matchesQuarter = hotel.quartier.toLowerCase().includes(quatarterTerm.toLowerCase());
-
-      // 5. Logique de prix intelligente :
-      // On vérifie si la fourchette de l'hôtel intersecte la recherche de l'utilisateur
       const priceMin = hotel.prixMin || 0;
-      const priceMax = hotel.prixMax || priceMin; // Si pas de prixMax, on prend prixMin
-
+      const priceMax = hotel.prixMax || priceMin;
       const userMin = minPrice === "" ? 0 : Number(minPrice);
       const userMax = maxPrice === "" ? Infinity : Number(maxPrice);
 
-      // On affiche l'hôtel si son prix minimum est dans la plage demandée
-      // OU si son prix maximum est dans la plage demandée
       const matchesPrice = priceMin <= userMax && priceMax >= userMin;
 
       return matchesCountry && matchesName && matchesCity && matchesQuarter && matchesPrice;
     });
-  }, [countryTerm, searchTerm, cityTerm, quatarterTerm, minPrice, maxPrice]);
+  }, [hotels, countryTerm, searchTerm, cityTerm, quatarterTerm, minPrice, maxPrice]);
 
   const clearFilters = () => {
-    setCountryTerm("");
-    setSearchTerm("");
-    setCityTerm("");
-    setQuarterTerm("");
-    setMinPrice("");
-    setMaxPrice("");
+    setCountryTerm(""); setSearchTerm(""); setCityTerm("");
+    setQuarterTerm(""); setMinPrice(""); setMaxPrice("");
   };
 
   return (
     <section className="bg-slate-50 min-h-screen py-20">
       <div className="max-w-7xl mx-auto px-6">
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          className="text-center max-w-3xl mx-auto mb-12"
-        >
-          <h1 className="text-3xl md:text-3xl font-bold text-slate-900 mb-4">
-            Découvrez nos differents hotels
-          </h1>
-          <p className="text-lg text-slate-600">
-            Saisissez vos critères pour une recherche personnalisée.
-          </p>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
+          <h1 className="text-3xl font-bold text-slate-900 mb-4">Découvrez nos différents hôtels</h1>
+          <p className="text-lg text-slate-600">Trouvez l'endroit idéal pour votre prochain séjour.</p>
         </motion.div>
+
+        {/* Affichage des erreurs */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-2xl p-4 mb-8 text-red-700">
+            {error}
+          </div>
+        )}
 
         {/* BARRE DE FILTRES */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-3xl shadow-xl p-6 mb-16 border border-slate-100 w-full"
-        >
-          <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 items-end">
-
-            {/* Recherche par pays */}
-            <div>
-              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-2 ml-1">Pays</label>
-              <div className="relative">
+        <div className="bg-white rounded-3xl shadow-xl p-6 mb-16 border border-slate-100">
+           <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 items-end">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Pays</label>
                 <input
                   type="text"
-                  placeholder="Ex: Cameroun..."
+                  placeholder="Ex: Cameroun"
                   value={countryTerm}
                   onChange={(e) => setCountryTerm(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 pl-4 pr-10 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition text-sm"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 />
               </div>
-            </div>
-            
-            {/* Recherche par Nom */}
-            <div>
-              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-2 ml-1">Nom de l'hôtel</label>
-              <div className="relative">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Nom de l'hôtel</label>
                 <input
                   type="text"
-                  placeholder="Ex: Hilton..."
+                  placeholder="Ex: La Perle"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 pl-4 pr-10 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition text-sm"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 />
               </div>
-            </div>
-
-            {/* Recherche par Ville */}
-            <div>
-              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-2 ml-1">Ville</label>
-              <div className="relative">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Ville</label>
                 <input
                   type="text"
-                  placeholder="Ex: Douala..."
+                  placeholder="Ex: Douala"
                   value={cityTerm}
                   onChange={(e) => setCityTerm(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 pl-10 pr-4 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition text-sm"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 />
               </div>
-            </div>
-
-            {/* Recherche par Quartier */}
-            <div>
-              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-2 ml-1">Quartier</label>
-              <div className="relative">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Quartier</label>
                 <input
                   type="text"
-                  placeholder="Ex: Akwa, Bastos..."
+                  placeholder="Ex: Bonamoussadi"
                   value={quatarterTerm}
                   onChange={(e) => setQuarterTerm(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 pl-10 pr-4 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition text-sm"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 />
               </div>
-            </div>
-
-            {/* Prix Min recherché */}
-            <div>
-              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-2 ml-1">Prix Minimum (FCFA)</label>
-              <input
-                type="number"
-                placeholder="Ex: 30000"
-                value={minPrice}
-                onChange={(e) => setMinPrice(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 px-4 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition text-sm"
-              />
-            </div>
-
-            {/* Prix Max recherché */}
-            <div>
-              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-2 ml-1">Prix Maximum (FCFA)</label>
-              <input
-                type="number"
-                placeholder="Ex: 80000"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 px-4 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition text-sm"
-              />
-            </div>
-
-            {/* Bouton de résultats */}
-            <div className="flex flex-col gap-2">
-              <button onClick={clearFilters} className="text-[9px] text-right text-slate-400 hover:text-red-500 transition font-bold uppercase mr-1">
-                Tout effacer
-              </button>
-              <div className="flex items-center justify-center gap-2 rounded-xl bg-[#0B1E3A] text-yellow-400 font-bold py-3 shadow-lg h-[46px] w-full border border-slate-800">
-                <Search size={16} />
-                <span className="text-xs">{filteredHotels.length} Trouvés</span>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Prix min</label>
+                <input
+                  type="number"
+                  placeholder="Min"
+                  value={minPrice}
+                  onChange={(e) => setMinPrice(e.target.value)}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                />
               </div>
-            </div>
-          </div>
-        </motion.div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Prix max</label>
+                <input
+                  type="number"
+                  placeholder="Max"
+                  value={maxPrice}
+                  onChange={(e) => setMaxPrice(e.target.value)}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                />
+              </div>
+              <button
+                onClick={clearFilters}
+                className="w-full px-6 py-2 bg-slate-200 text-slate-900 rounded-lg hover:bg-slate-300 transition font-medium"
+              >
+                <Filter size={18} className="inline-block mr-2" />
+                Réinitialiser
+              </button>
+           </div>
+           <div className="mt-4 text-sm text-slate-600">
+             {filteredHotels.length} hôtel(s) trouvé(s)
+           </div>
+        </div>
 
-        {/* LISTE DES HÔTELS */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {loading ? (
-            Array.from({ length: 6 }).map((_, index) => <HotelCardSkeleton key={index} />)
+            Array.from({ length: 6 }).map((_, i) => <HotelCardSkeleton key={i} />)
           ) : (
             <AnimatePresence mode="popLayout">
               {filteredHotels.length > 0 ? (
                 filteredHotels.map((hotel) => (
-                  <motion.div 
-                    key={hotel.id} 
-                    layout 
-                    initial={{ opacity: 0, scale: 0.9 }} 
-                    animate={{ opacity: 1, scale: 1 }} 
-                    exit={{ opacity: 0, scale: 0.9 }}
-                  >
-                    <HotelCard {...hotel} />
+                  <motion.div key={hotel.idHotel} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                    <HotelCard 
+                        id={hotel.idHotel}
+                        nom={hotel.nom}
+                        pays={hotel.pays}
+                        ville={hotel.ville}
+                        adresse={hotel.adresse}
+                        prixMin={hotel.prixMin}
+                        note={4.5}
+                        chambres={hotel.nombreChambres}
+                        // Adaptation : On transforme le tableau d'objets images en tableau de strings (URLs)
+                        images={hotel.images?.map((img) => img.url) || []}
+                    />
                   </motion.div>
                 ))
               ) : (
                 <div className="col-span-full text-center py-20 bg-white rounded-3xl border-2 border-dashed border-slate-200">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-50 text-slate-300 mb-4">
-                    <Filter size={32} />
-                  </div>
-                  <p className="text-slate-500 italic">Aucun hôtel ne correspond à votre recherche à cette adresse ou ce budget.</p>
-                  <button onClick={clearFilters} className="mt-4 text-yellow-600 font-bold hover:underline">
-                    Réinitialiser les filtres
-                  </button>
+                  <p className="text-slate-500">Aucun hôtel ne correspond à vos critères.</p>
                 </div>
               )}
             </AnimatePresence>

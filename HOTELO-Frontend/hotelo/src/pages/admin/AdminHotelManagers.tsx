@@ -1,4 +1,3 @@
-// src/pages/admin/AdminValidation.tsx
 import { useState, useEffect } from "react";
 import { 
   CheckCircle, XCircle, Search,
@@ -22,7 +21,13 @@ export default function AdminHotelManagers() {
     setIsLoading(true);
     try {
       const data = await adminService.getAllManagers();
-      setManagers(data);
+      if (Array.isArray(data)) {
+        setManagers(data);
+      } else {
+        console.error("adminService.getAllManagers() n'a pas retourné un tableau:", data);
+        setManagers([]); // Réinitialise à un tableau vide si les données sont inattendues
+        toast.error("Format de données inattendu des gérants");
+      }
     } catch (error) {
       console.error(error);
       toast.error("Impossible de charger les gérants");

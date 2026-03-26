@@ -8,19 +8,21 @@ interface HotelCardProps {
   pays: string;
   nom: string;
   ville: string;
-  quartier: string;
+  adresse?: string;
   prixMin: number;
   note: number;
   chambres: number;
   images: string[];
 }
 
+const API_URL = "http://localhost:5000";
+
 export default function HotelCard({
   id,
   pays,
   nom,
   ville,
-  quartier,
+  adresse,
   prixMin,
   note,
   chambres,
@@ -30,15 +32,28 @@ export default function HotelCard({
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
 
+  // Préparer les images avec URL complète
+  const displayImages = images && images.length > 0
+    ? images.map(img => {
+        if (img.startsWith('http')) return img; // Déjà une URL complète
+        return `${API_URL}${img}`; // Ajouter le domaine
+      }).filter(img => img) // Filtrer les vides
+    : ["https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=500"];
+
+  // Utiliser un fallback si pas d'images
+  const finalImages = displayImages.length > 0 ? displayImages : [
+    "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=500"
+  ];
+
   // Fonctions pour changer d'image manuellement
   const nextImage = (e: React.MouseEvent) => {
     e.stopPropagation(); // Évite de cliquer sur la carte
-    setIndex((prev) => (prev + 1) % images.length);
+    setIndex((prev) => (prev + 1) % finalImages.length);
   };
 
   const prevImage = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIndex((prev) => (prev - 1 + images.length) % images.length);
+    setIndex((prev) => (prev - 1 + finalImages.length) % finalImages.length);
   };
 
   // Défilement automatique
@@ -46,11 +61,11 @@ export default function HotelCard({
     if (isHovered) return; // Pause si la souris est dessus
 
     const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % images.length);
+      setIndex((prev) => (prev + 1) % finalImages.length);
     }, 4000); // 4 secondes pour plus de confort
 
     return () => clearInterval(interval);
-  }, [images.length, isHovered]);
+  }, [finalImages.length, isHovered]);
 
   return (
     <motion.article
@@ -64,7 +79,7 @@ export default function HotelCard({
       {/* CAROUSEL */}
       <div className="relative h-48 sm:h-52 overflow-hidden bg-gray-200">
         {/* Images avec fondu simple */}
-        {images.map((img, i) => (
+        {finalImages.map((img, i) => (
           <motion.img
             key={i}
             src={img}
@@ -73,6 +88,10 @@ export default function HotelCard({
             animate={{ opacity: i === index ? 1 : 0 }}
             transition={{ duration: 0.8 }}
             className="absolute inset-0 h-full w-full object-cover"
+            onError={(e) => {
+              // Fallback si l'image ne charge pas
+              (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=500";
+            }}
           />
         ))}
 
@@ -100,7 +119,7 @@ export default function HotelCard({
 
         {/* Points indicateurs (Dots) */}
         <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
-          {images.map((_, i) => (
+          {finalImages.map((_, i) => (
             <button
               key={i}
               onClick={(e) => { e.stopPropagation(); setIndex(i); }}
@@ -118,7 +137,7 @@ export default function HotelCard({
           <h3 className="text-lg font-bold text-slate-900 line-clamp-1">{nom}</h3>
           <p className="flex items-center gap-1 text-sm text-slate-500">
             <MapPin size={14} className="text-yellow-500" />
-            {ville}, {quartier} | {pays}
+            {ville}, {adresse} | {pays}
           </p>
         </div>
 

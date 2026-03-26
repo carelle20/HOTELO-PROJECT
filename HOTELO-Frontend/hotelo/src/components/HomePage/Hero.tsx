@@ -8,7 +8,7 @@ export default function Hero() {
       id="hero"
       className="relative h-screen w-full bg-cover bg-center"
       style={{
-        backgroundImage: "url('/public/assets/chambre-Accueil.jpg')",
+        backgroundImage: "url('/assets/Chambre-Accueil.jpg')",
       }}
     >
       {/* Overlay */}

@@ -1,6 +1,7 @@
 // src/context/auth.types.ts
 
 export type UserRole = "client" | "chef_hotel" | "admin" | "super_admin";
+export type DateTime = string;
 
 export interface User {
   idUtilisateur: number;
@@ -8,6 +9,7 @@ export interface User {
   nom: string;
   email: string;
   role: UserRole;
+  creeLe: DateTime;
   estChefHotel?: boolean;
   estValide?: boolean;
 }

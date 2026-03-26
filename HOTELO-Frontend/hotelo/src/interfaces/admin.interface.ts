@@ -19,3 +19,15 @@ export interface HotelManager {
     telephone: string;
   } | null;
 }
+
+export interface CatalogItem {
+  idEquipement?: number;
+  idService?: number;
+  nom: string;
+  icone: string | null;
+}
+
+export interface CatalogHotelProps {
+  type: "equipements" | "services";
+  title: string;
+}

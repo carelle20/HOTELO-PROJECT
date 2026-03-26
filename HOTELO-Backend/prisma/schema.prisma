@@ -16,6 +16,32 @@ enum Role {
   super_admin
 }
 
+enum StatutHotel {
+  brouillon
+  en_attente
+  valider
+  refuser
+}
+
+enum StatutReservation {
+  en_attente
+  confirmée
+  annulée
+  complétée
+}
+
+enum StatutFacture {
+  générée
+  payée
+  annulée
+}
+
+enum TypeCaisse {
+  revenus
+  dépenses
+  ajustement
+}
+
 model Utilisateur {
   idUtilisateur     Int              @id @default(autoincrement())
   prenom            String
@@ -24,19 +50,330 @@ model Utilisateur {
   motDePasse        String
   role              Role             @default(client)
   estValide         Boolean          @default(false)
-  premiereConnexion Boolean          @default(true) 
+  premiereConnexion Boolean          @default(true)
   creeLe            DateTime         @default(now())
   misAJourLe        DateTime         @updatedAt
   profilChefHotel   ProfilChefHotel?
+  hotels            Hotel[]
+  reservations      Reservation[]
+  avis              Avis[]
+  factures          Facture[]
+  entreesCaisse     Caisse[]
 }
 
 model ProfilChefHotel {
-  id_profilChefHotel  Int          @id @default(autoincrement())
-  nom_hotel           String
-  adresse_hotel       String
-  telephone           String
-  createdAt           DateTime     @default(now())
+  id_profilChefHotel Int      @id @default(autoincrement())
+  nom_hotel          String
+  adresse_hotel      String
+  telephone          String
+  createdAt          DateTime @default(now())
 
-  utilisateurId       Int          @unique
-  utilisateur         Utilisateur  @relation(fields: [utilisateurId], references: [idUtilisateur])
+  utilisateurId Int         @unique
+  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [idUtilisateur])
+}
+
+model Hotel {
+  idHotel Int @id @default(autoincrement())
+
+  nom         String
+  description String
+
+  pays    String
+  ville   String
+  adresse String
+
+  latitude  Float
+  longitude Float
+
+  telephone String
+  email     String?
+
+  nombreChambres Int
+  prixMin        Float
+  prixMax        Float
+
+  numeroRegistre String
+
+  statut    StatutHotel @default(brouillon)
+  estPublie Boolean     @default(false)
+
+  chefHotelId Int
+  chefHotel   Utilisateur @relation(fields: [chefHotelId], references: [idUtilisateur])
+
+  images         ImageHotel[]
+  chambres       Chambre[]
+  equipements    HotelEquipement[]
+  services       HotelService[]
+  documents      DocumentHotel[]
+  visite3D       Visite3DScene[]
+  reservations   Reservation[]
+  factures       Facture[]
+  avis           Avis[]
+  caisses        Caisse[]
+  disponibilites DisponibiliteChambre[]
+
+  creeLe     DateTime @default(now())
+  misAJourLe DateTime @updatedAt
+}
+
+model Chambre {
+  idChambre Int @id @default(autoincrement())
+
+  nom         String
+  description String?
+  capacite    Int
+  prix        Float
+  statut      String  @default("disponible")
+
+  hotelId Int
+  hotel   Hotel @relation(fields: [hotelId], references: [idHotel])
+
+  images         ImageChambre[]
+  visite3D       Visite3DScene[]
+  reservations   Reservation[]
+  disponibilites DisponibiliteChambre[]
+
+  creeLe     DateTime @default(now())
+  misAJourLe DateTime @updatedAt
+}
+
+model Equipement {
+  idEquipement Int               @id @default(autoincrement())
+  nom          String            @unique
+  icone        String?
+  hotels       HotelEquipement[]
+}
+
+model Service {
+  idService Int     @id @default(autoincrement())
+  nom       String  @unique
+  icone     String?
+
+  hotels HotelService[]
+}
+
+model HotelEquipement {
+  hotelId      Int
+  equipementId Int
+
+  hotel      Hotel      @relation(fields: [hotelId], references: [idHotel])
+  equipement Equipement @relation(fields: [equipementId], references: [idEquipement])
+
+  @@id([hotelId, equipementId])
+}
+
+model HotelService {
+  hotelId   Int
+  serviceId Int
+
+  hotel   Hotel   @relation(fields: [hotelId], references: [idHotel])
+  service Service @relation(fields: [serviceId], references: [idService])
+
+  @@id([hotelId, serviceId])
+}
+
+model ImageHotel {
+  idImageHotel  Int      @id @default(autoincrement())
+  url           String
+  estPrincipale Boolean  @default(false)
+  creeLe        DateTime @default(now())
+
+  hotelId Int
+  hotel   Hotel @relation(fields: [hotelId], references: [idHotel])
+}
+
+model ImageChambre {
+  idImageChambre Int      @id @default(autoincrement())
+  url            String
+  creeLe         DateTime @default(now())
+
+  chambreId Int
+  chambre   Chambre @relation(fields: [chambreId], references: [idChambre])
+}
+
+model DocumentHotel {
+  idDocument Int    @id @default(autoincrement())
+  type       String
+  url        String
+
+  hotelId Int
+  hotel   Hotel @relation(fields: [hotelId], references: [idHotel])
+
+  creeLe DateTime @default(now())
+}
+
+model Visite3DScene {
+  idScene     Int      @id @default(autoincrement())
+  identifiant String
+  nom         String
+  image360Url String
+  creeLe      DateTime @default(now())
+
+  hotel     Hotel?   @relation(fields: [hotelId], references: [idHotel])
+  hotelId   Int?
+  chambre   Chambre? @relation(fields: [chambreId], references: [idChambre])
+  chambreId Int?
+
+  points Visite3DPoint[]
+}
+
+model Visite3DPoint {
+  idPoint   Int    @id @default(autoincrement())
+  label     String
+  versScene String
+  positionX Float
+  positionY Float
+  positionZ Float
+
+  sceneId Int
+  scene   Visite3DScene @relation(fields: [sceneId], references: [idScene])
+}
+
+model Reservation {
+  idReservation Int @id @default(autoincrement())
+  dateArrivee     DateTime
+  dateDepart      DateTime
+  nombreNuits     Int
+  nombrePersonnes Int
+
+  statut          StatutReservation @default(en_attente)
+  motifAnnulation String?
+  prixUnitaire Float // Prix par nuit
+  montantTotal Float // Montant total
+  clientId Int
+  client   Utilisateur @relation(fields: [clientId], references: [idUtilisateur])
+  chambreId Int
+  chambre   Chambre @relation(fields: [chambreId], references: [idChambre])
+
+  hotelId Int
+  hotel   Hotel @relation(fields: [hotelId], references: [idHotel])
+
+  factures       Facture[]
+  caisses        Caisse[]
+  avis           Avis[]
+  disponibilites DisponibiliteChambre[]
+
+  creeLe     DateTime @default(now())
+  misAJourLe DateTime @updatedAt
+
+  @@index([clientId])
+  @@index([chambreId])
+  @@index([hotelId])
+  @@index([dateArrivee])
+  @@index([statut])
+}
+
+model Facture {
+  idFacture Int @id @default(autoincrement())
+  numeroFacture String @unique
+  montantHT  Float
+  montantTVA Float
+  montantTTC Float
+
+  statut       StatutFacture @default(générée)
+  datePaiement DateTime?
+
+  caisse Caisse[]
+  reservationId Int         @unique
+  reservation   Reservation @relation(fields: [reservationId], references: [idReservation])
+
+  hotelId Int
+  hotel   Hotel @relation(fields: [hotelId], references: [idHotel])
+
+  clientId Int
+  client   Utilisateur @relation(fields: [clientId], references: [idUtilisateur])
+  urlPDF String?
+  creeLe     DateTime @default(now())
+  misAJourLe DateTime @updatedAt
+
+  @@index([numeroFacture])
+  @@index([reservationId])
+  @@index([hotelId])
+  @@index([clientId])
+  @@index([statut])
+}
+
+model Caisse {
+  idCaisse Int @id @default(autoincrement())
+  type        TypeCaisse
+  description String
+  montant     Float
+
+  statut String @default("validée")
+  utilisateurId Int // Ajoutez ce champ pour la clé étrangère
+  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [idUtilisateur])
+  hotelId       Int
+  hotel         Hotel       @relation(fields: [hotelId], references: [idHotel])
+
+  reservationId Int?
+  reservation   Reservation? @relation(fields: [reservationId], references: [idReservation])
+
+  factureId Int?
+  facture   Facture? @relation(fields: [factureId], references: [idFacture])
+  justificatifUrl String?
+
+  creeLe     DateTime @default(now())
+  misAJourLe DateTime @updatedAt
+  creePar    Int // ID du chef hôtel
+
+  @@index([hotelId])
+  @@index([type])
+  @@index([statut])
+  @@index([creeLe])
+}
+
+model Avis {
+  idAvis Int @id @default(autoincrement())
+
+  // Contenu
+  titre       String?
+  commentaire String
+  note        Int // 1-5 étoiles
+
+  // Relations
+  clientId Int
+  client   Utilisateur @relation(fields: [clientId], references: [idUtilisateur])
+
+  hotelId Int
+  hotel   Hotel @relation(fields: [hotelId], references: [idHotel])
+
+  reservationId Int?
+  reservation   Reservation? @relation(fields: [reservationId], references: [idReservation])
+
+  // Modération
+  estModere Boolean @default(true)
+
+  // Audit
+  creeLe     DateTime @default(now())
+  misAJourLe DateTime @updatedAt
+
+  @@index([hotelId])
+  @@index([clientId])
+  @@index([note])
+  @@index([estModere])
+}
+
+model DisponibiliteChambre {
+  idDisponibilite Int @id @default(autoincrement())
+
+  date DateTime
+
+  disponible Boolean @default(true)
+  raison     String?
+  chambreId Int
+  chambre   Chambre @relation(fields: [chambreId], references: [idChambre])
+
+  hotelId Int
+  hotel   Hotel @relation(fields: [hotelId], references: [idHotel])
+
+  reservationId Int?
+  reservation   Reservation? @relation(fields: [reservationId], references: [idReservation])
+
+  creeLe     DateTime @default(now())
+  misAJourLe DateTime @updatedAt
+
+  @@unique([chambreId, date])
+  @@index([hotelId])
+  @@index([date])
+  @@index([disponible])
 }

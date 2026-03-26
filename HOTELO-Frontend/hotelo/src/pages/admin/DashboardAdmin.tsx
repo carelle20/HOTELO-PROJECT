@@ -21,7 +21,7 @@ export default function AdminDashboard() {
         // C'est ici qu'on utilise setStats, ce qui règle ton erreur ESLint
         setStats(data);
       } catch (err) {
-        console.error("Erreur Dashboard:", err);
+        console.error(err);
         toast.error("Erreur de connexion au serveur", {
           description: "Impossible de récupérer les statistiques en temps réel."
         });
@@ -59,25 +59,25 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
         <KpiCard
           title="Hôtels enregistrés"
-          value={stats?.hotelsCount.toString() || "0"}
+          value={stats?.hotelsCount?.toString() || "0"}
           icon={<Hotel size={22} />}
           color="bg-blue-100 text-blue-700"
         />
         <KpiCard
           title="Responsables d'hôtel"
-          value={stats?.managersCount.toString() || "0"}
+          value={stats?.managersCount?.toString() || "0"}
           icon={<Users size={22} />}
           color="bg-green-100 text-green-700"
         />
         <KpiCard
           title="En attente de validation"
-          value={stats?.pendingValidationCount.toString() || "0"}
+          value={stats?.pendingValidationCount?.toString() || "0"}
           icon={<Clock size={22} />}
           color="bg-yellow-100 text-yellow-700"
         />
         <KpiCard
           title="Réservations totales"
-          value={stats?.totalBookings.toString() || "0"}
+          value={stats?.totalBookings?.toString() || "0"}
           icon={<CalendarCheck size={22} />}
           color="bg-purple-100 text-purple-700"
         />

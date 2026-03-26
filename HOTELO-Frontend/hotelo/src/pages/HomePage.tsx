@@ -3,6 +3,7 @@ import About from "../components/HomePage/About";
 import KeyFeatures from "../components/HomePage/KeyFeatures";
 import HowItWorks from "../components/HomePage/HowItWorks";
 import RedirectTo from "../components/HomePage/RedirectTo";
+import FeaturedHotels from "../components/HomePage/FeaturedHotels";
 
 export default function HomePage() {
   return (
@@ -10,6 +11,9 @@ export default function HomePage() {
 
       {/* Hero section */}
       <Hero />
+
+      {/* Hôtels en vedette */}
+      <FeaturedHotels />
 
       {/* Key Features section */}
       <KeyFeatures />

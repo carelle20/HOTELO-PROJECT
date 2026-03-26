@@ -37,7 +37,7 @@ export default function Login() {
         } else if (userRole === "chef_hotel") {
           navigate("/manager/dashboard");
         } else {
-          navigate("/");
+          navigate("/client/dashboard");
         }
       }, 1000);
     } catch (err) {

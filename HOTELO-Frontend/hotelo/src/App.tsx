@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ManagerRoutes } from "./routes/ManagerRoutes";
+import { ClientRoutes } from "./routes/ClientRoutes";
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
 
@@ -12,8 +13,10 @@ import Contact from "./pages/Contact";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import Reservation from "./pages/Reserver";
+import Room3DExperience from "./pages/Room3DExperience";
 import { Toaster } from "sonner";
 import { AdminRoutes } from "./routes/AdminRoutes";
+import Hotel3DView from "./pages/Hotel3DView";
 
 export default function App() {
   return (
@@ -27,7 +30,11 @@ export default function App() {
         <Route path="/discover" element={<MainLayout><DiscoverHotels /></MainLayout>} />
         <Route path="/contact" element={<MainLayout><Contact /></MainLayout>} />
         <Route path="/hotels/:id" element={<MainLayout><HotelDetails /></MainLayout>} />
+        <Route path="/hotels/:id/visite-3d" element={<MainLayout><Hotel3DView /></MainLayout>} />
         <Route path="/reserver/:id" element={<MainLayout><Reservation /></MainLayout>} />
+
+        {/* PAGES SANS LAYOUT (fullscreen) */}
+        <Route path="/chambre/3d/:roomId" element={<Room3DExperience />} />
 
         {/* PAGES AVEC LE AUTHLAYOUT */}
         <Route path="/connexion" element={<AuthLayout><Login /></AuthLayout>} />
@@ -35,6 +42,9 @@ export default function App() {
 
         {/* ROUTES HOTEL MANAGER */}
         {ManagerRoutes}
+
+        {/* ROUTES CLIENT */}
+        {ClientRoutes}
 
         {/* ROUTES ADMIN */}
         {AdminRoutes}
