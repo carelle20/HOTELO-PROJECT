@@ -272,7 +272,7 @@ export default function DashboardPage() {
           />
           <QualityItem
             label="Confirmations"
-            value={String(data.reservationsEnAttente?.length ?? 0)}
+            value={String(data.reservationsConfirmees?.length ?? 0)}
             subtitle="Validées"
             icon={CheckCircle2}
             bg="bg-green-50"
@@ -308,38 +308,100 @@ export default function DashboardPage() {
 
       {/* TABLEAU DES RÉSERVATIONS CONSOLIDÉES */}
       {data?.reservationsEnAttente && data.reservationsEnAttente.length > 0 && (
-        <motion.div variants={itemVariants} className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
+        <motion.div variants={itemVariants} className="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-sm">
+          <div className="flex items-center justify-between mb-8">
             <h3 className="text-lg font-bold text-[#0B1E3A]">Dernières réservations en attente</h3>
-            <Link to="/manager/reservations" className="text-sm font-bold text-blue-600 hover:underline">
-              Voir tout le registre
+            <Link to="/manager/reservations" className="text-sm font-bold text-indigo-600 hover:text-indigo-700 transition">
+              Voir tout le registre →
             </Link>
           </div>
 
-          <div className="overflow-x-auto">
+          {/* MOBILE: CARTES */}
+          <div className="md:hidden grid gap-4">
+            {data.reservationsEnAttente.slice(0, 5).map((res) => (
+              <div
+                key={res.idReservation}
+                className="border border-slate-100 rounded-xl p-4 hover:border-indigo-200 hover:shadow-md transition"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <p className="text-xs text-slate-500 font-bold mb-1">HÔTEL</p>
+                    <p className="font-bold text-[#0B1E3A] text-sm">{res.hotel?.nom || res.chambre?.hotel?.nom || "N/A"}</p>
+                  </div>
+                  <span className="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded-full">
+                    {res.montantTotal.toLocaleString("fr-FR")} FCFA
+                  </span>
+                </div>
+                <p className="text-xs text-slate-600 mb-3">
+                  👤 {res.client?.nom} {res.client?.prenom}
+                </p>
+                <p className="text-xs text-slate-500 mb-4">
+                  📅 {new Date(res.dateArrivee).toLocaleDateString("fr-FR", {
+                    month: "short",
+                    day: "numeric",
+                  })} → {new Date(res.dateDepart).toLocaleDateString("fr-FR", {
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </p>
+                <Link
+                  to={`/manager/reservations/${res.idReservation}`}
+                  className="w-full bg-indigo-600 text-white font-bold py-2 rounded-lg text-xs hover:bg-indigo-700 transition flex items-center justify-center gap-1"
+                >
+                  Traiter <ChevronRight size={14} />
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          {/* DESKTOP: TABLE */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="text-slate-400 text-[11px] uppercase tracking-wider border-b border-slate-50">
-                  <th className="pb-4">Hôtel</th>
-                  <th className="pb-4">Client</th>
-                  <th className="pb-4">Période</th>
-                  <th className="pb-4">Montant</th>
-                  <th className="pb-4 text-right">Action</th>
+                <tr className="text-slate-400 text-[11px] uppercase tracking-wider border-b border-slate-100">
+                  <th className="pb-4 font-bold">Hôtel</th>
+                  <th className="pb-4 font-bold">Client</th>
+                  <th className="pb-4 font-bold">Période</th>
+                  <th className="pb-4 font-bold">Montant</th>
+                  <th className="pb-4 text-right font-bold">Action</th>
                 </tr>
               </thead>
               <tbody className="text-sm">
                 {data.reservationsEnAttente.slice(0, 5).map((res) => (
-                  <tr key={res.idReservation} className="border-b border-slate-50 hover:bg-slate-50/50 transition">
-                    <td className="py-4 font-bold text-slate-700">{res.chambre?.hotel?.nom || "N/A"}</td>
-                    <td className="py-4 text-[#0B1E3A] font-medium">{res.client?.nom} {res.client?.prenom}</td>
-                    <td className="py-4 text-slate-500">Du {new Date(res.dateArrivee).toLocaleDateString()}</td>
-                    <td className="py-4 font-black text-emerald-600">{res.montantTotal.toLocaleString("fr-FR")} FCFA</td>
+                  <tr
+                    key={res.idReservation}
+                    className="border-b border-slate-50 hover:bg-slate-50/50 transition"
+                  >
+                    <td className="py-4 font-bold text-[#0B1E3A]">
+                      {res.hotel?.nom || res.chambre?.hotel?.nom || "N/A"}
+                    </td>
+                    <td className="py-4 text-slate-700 font-medium text-sm">
+                      {res.client?.nom} {res.client?.prenom}
+                    </td>
+                    <td className="py-4 text-slate-600 text-sm">
+                      {new Date(res.dateArrivee).toLocaleDateString("fr-FR", {
+                        month: "short",
+                        day: "numeric",
+                      })}{" "}
+                      →{" "}
+                      {new Date(res.dateDepart).toLocaleDateString("fr-FR", {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </td>
+                    <td className="py-4 font-black text-emerald-600">
+                      {res.montantTotal.toLocaleString("fr-FR")}
+                    </td>
                     <td className="py-4 text-right">
                       <Link
                         to={`/manager/reservations/${res.idReservation}`}
-                        className="text-blue-600 font-bold flex items-center justify-end gap-1 group"
+                        className="text-indigo-600 font-bold hover:text-indigo-700 flex items-center justify-end gap-1 group"
                       >
-                        Traiter <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                        Traiter{" "}
+                        <ChevronRight
+                          size={14}
+                          className="group-hover:translate-x-1 transition-transform"
+                        />
                       </Link>
                     </td>
                   </tr>
@@ -467,7 +529,7 @@ function HotelCardDashboard({ hotel }: HotelCardDashboardProps) {
 
         {/* ACTION */}
         <Link
-          to={`/manager/hotels/${hotel.idHotel}`}
+          to={`/manager/hotels/${hotel.idHotel}/details`}
           className="w-full mt-auto px-3 py-2 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-lg font-bold text-xs hover:shadow-md transition-all flex items-center justify-center gap-2"
         >
           Gérer <ChevronRight size={14} />

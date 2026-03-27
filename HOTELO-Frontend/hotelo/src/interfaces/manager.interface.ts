@@ -5,6 +5,7 @@ export interface ManagerDashboardStats {
   totalPaiements: number;
   satisfactionMoyenne: number;
   reservationsEnAttente: RecentBooking[];
+  reservationsConfirmees: RecentBooking[];
   dernieresMaj: string;
   missingImages?: boolean;
   missingRooms?: boolean;
@@ -28,6 +29,11 @@ export interface RecentBooking {
     hotel?: {
       nom: string;
     };
+  };
+  hotel?: {
+    idHotel: number;
+    nom: string;
+    ville?: string;
   };
 }
 
