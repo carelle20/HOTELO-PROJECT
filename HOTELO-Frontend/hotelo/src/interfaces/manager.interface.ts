@@ -1,4 +1,3 @@
-//src/interfaces/manager.interface.ts
 export interface ManagerDashboardStats {
   totalReservations: number;
   totalRevenusJour: number;
@@ -38,6 +37,7 @@ export interface RecentBooking {
 }
 
 export interface Hotel {
+  data: Hotel;
   idHotel: number;
   nom: string;
   ville: string;

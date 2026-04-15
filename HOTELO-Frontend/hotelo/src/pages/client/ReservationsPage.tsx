@@ -1,4 +1,3 @@
-// src/pages/client/ReservationsPage.tsx
 import { useEffect, useState, useMemo } from "react";
 import { clientService } from "../../services/client.service";
 import { type Reservation } from "../../interfaces/client.interface";
@@ -41,7 +40,6 @@ export default function ReservationsPage() {
     fetchReservations();
   }, []);
 
-  // Logique de Traitement (Filtre + Recherche + Tri)
   const processedReservations = useMemo(() => {
     let result = reservations.filter(r => !hiddenIds.includes(r.idReservation));
     const now = new Date();
@@ -55,7 +53,7 @@ export default function ReservationsPage() {
       result = result.filter(r => r.statut === "annulée");
     }
 
-    // 2. Recherche (Nom hôtel, Ville ou ID)
+    // 2. Recherche 
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       result = result.filter(r => 
@@ -159,7 +157,7 @@ export default function ReservationsPage() {
         </div>
       </div>
 
-      {/* Tableau style TailAdmin */}
+      {/* Tableau */}
       <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
@@ -307,9 +305,6 @@ export default function ReservationsPage() {
 
               <div className="bg-blue-50 p-3 rounded-lg flex gap-3 items-start">
                 <div className="text-blue-600 mt-0.5"><Hotel size={18}/></div>
-                <p className="text-xs text-blue-700">
-                  Note : Le montant total sera automatiquement recalculé par le système en fonction du nombre de nuits.
-                </p>
               </div>
 
               {/* Actions Footer */}

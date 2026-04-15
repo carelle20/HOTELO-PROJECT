@@ -17,8 +17,6 @@ export const reservationService = {
       const dateArrivee = new Date(data.dateArrivee);
       const dateDepart = new Date(data.dateDepart);
       if (dateArrivee <= new Date()) throw new Error("Date d'arrivée invalide");
-      // Vérifier la disponibilité
-      // On vérifie s'il existe déjà une réservation CONFIRMÉE ou EN ATTENTE sur ces dates
       const conflit = await tx.reservation.findFirst({
         where: {
           chambreId: data.chambreId,
@@ -51,7 +49,6 @@ export const reservationService = {
           hotelId: data.hotelId,
         }
       });
-      // 5. Bloquer les dates dans DisponibiliteChambre
       const dates = [];
       let current = new Date(dateArrivee);
       while (current < dateDepart) {
@@ -172,7 +169,6 @@ export const reservationService = {
   /* Mettre à jour une réservation */
   async updateReservation(id: number, data: Partial<Reservation>): Promise<Reservation> {
     try {     
-      // 1. On nettoie les données pour éviter les champs non modifiables
       const { 
         idReservation, 
         hotel, 
@@ -182,15 +178,13 @@ export const reservationService = {
         creeLe, 
         ...cleanData 
       } = data;
-      // 2. On effectue l'update sur Prisma
       const updated = await prisma.reservation.update({
         where: { idReservation: id },
         data: {
           ...cleanData,
-          // On s'assure que les dates sont au bon format Date pour Prisma
           dateArrivee: data.dateArrivee ? new Date(data.dateArrivee) : undefined,
           dateDepart: data.dateDepart ? new Date(data.dateDepart) : undefined,
-          misAJourLe: new Date(), // On utilise un objet Date natif
+          misAJourLe: new Date(),
         },
         include: {
           hotel: true,
@@ -204,15 +198,12 @@ export const reservationService = {
     }
   },
 
-  /**
-   * Confirmer une réservation (par le chef hôtel)
-   */
+  /* Confirmer une réservation */
   async confirmerReservation(
     reservationId: number,
     chefHotelId: number
   ): Promise<Reservation | null> {
     try {
-      // Vérifier que la réservation appartient à l'hôtel du chef
       const reservation = await prisma.reservation.findUnique({
         where: { idReservation: reservationId },
         include: { hotel: true },
@@ -262,16 +253,13 @@ export const reservationService = {
     }
   },
 
-  /**
-   * Refuser une réservation (par le chef hôtel)
-   */
+  /* Refuser une réservation (par le chef hôtel) */
   async refuserReservation(
     reservationId: number,
     chefHotelId: number,
     motif: string
   ): Promise<Reservation | null> {
     try {
-      // Vérifier que la réservation appartient à l'hôtel du chef
       const reservation = await prisma.reservation.findUnique({
         where: { idReservation: reservationId },
         include: { hotel: true },
@@ -332,11 +320,7 @@ export const reservationService = {
     }
   },
 
-  // ========== DISPONIBILITÉ ==========
-
-  /**
-   * Vérifier la disponibilité d'une chambre
-   */
+  /* Vérifier la disponibilité d'une chambre */
   async verifierDisponibilite(
     chambreId: number,
     dateArrivee: string,
@@ -384,8 +368,6 @@ export const reservationService = {
         nuitsSansDisponibilite.push(d.date.toISOString().split("T")[0]);
         if (d.raison) raisons.add(d.raison);
       });
-
-      // Vérifier aussi les réservations confirmées
       const reservations = await prisma.reservation.findMany({
         where: {
           chambreId,
@@ -423,9 +405,7 @@ export const reservationService = {
     }
   },
 
-  /**
-   * Créer les entrées de disponibilité pour une période
-   */
+  /* Créer les entrées de disponibilité pour une période */
   async creerDisponibilites(
     chambreId: number,
     hotelId: number,
@@ -462,9 +442,7 @@ export const reservationService = {
     }
   },
 
-  /**
-   * Récupérer les réservations en attente pour un hôtel
-   */
+  /* Récupérer les réservations en attente pour un hôtel */
   async getReservationsEnAttente(hotelId: number): Promise<Reservation[]> {
     try {
       return (await prisma.reservation.findMany({
@@ -503,9 +481,7 @@ export const reservationService = {
     }
   },
 
-  /**
-   * Récupérer les réservations confirmées pour un hôtel
-   */
+  /* Récupérer les réservations confirmées pour un hôtel */
   async getReservationsConfirmees(hotelId: number): Promise<Reservation[]> {
     try {
       return (await prisma.reservation.findMany({
@@ -544,9 +520,7 @@ export const reservationService = {
     }
   },
 
-  /**
-   * Obtenir les statistiques de réservations
-   */
+  /* Obtenir les statistiques de réservations */
   async getStatsReservations(
     hotelId: number,
     mois?: number,

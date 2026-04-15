@@ -1,4 +1,3 @@
-// src/services/auth.service.ts
 import api from "../api/axios";
 import type { LoginResponse, RegisterData, User } from "../context/auth.types";
 

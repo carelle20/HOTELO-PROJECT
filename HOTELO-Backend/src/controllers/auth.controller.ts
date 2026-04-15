@@ -57,7 +57,6 @@ export class AuthController {
   // PROFILE
   static async profile(req: Request, res: Response) {
     try {
-      // 1. Récupérer l'ID depuis le middleware d'auth (req.user)
       const userId = (req as any).user?.id;
       if (!userId) {
         return res.status(401).json({ 
@@ -65,7 +64,6 @@ export class AuthController {
           message: "Utilisateur non authentifié" 
         });
       }
-      // 2. Appeler le service pour avoir les données à jour
       const user = await AuthService.userProfile(Number(userId));
       if (!user) {
         return res.status(404).json({ 
@@ -73,7 +71,6 @@ export class AuthController {
           message: "Utilisateur introuvable" 
         });
       }
-      // 3. Renvoyer l'utilisateur (estValide sera maintenant présent)
       return res.status(200).json(user);
     } catch (error: any) {
       console.error("Erreur Profile Controller:", error.message);

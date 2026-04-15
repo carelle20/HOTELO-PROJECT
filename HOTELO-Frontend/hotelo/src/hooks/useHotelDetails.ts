@@ -10,8 +10,8 @@ interface UseHotelDetailsState {
 }
 
 /**
- * Hook personnalisé pour récupérer les détails d'un hôtel
- * @param {number | string | null | undefined} hotelId - L'ID de l'hôtel à récupérer
+ * Hook pour récupérer les détails d'un hôtel
+ * @param {number | string | null | undefined} hotelId 
  * @returns {UseHotelDetailsState} État de l'hôtel, chargement et erreur
  */
 export const useHotelDetails = (hotelId: number | string | null | undefined): UseHotelDetailsState => {
@@ -29,7 +29,6 @@ export const useHotelDetails = (hotelId: number | string | null | undefined): Us
       try {
         setLoading(true);
         setError(null);
-        // Ensure hotelId is a number
         const id = typeof hotelId === "string" ? parseInt(hotelId, 10) : hotelId;
         if (isNaN(id)) throw new Error("ID d'hôtel invalide");
 

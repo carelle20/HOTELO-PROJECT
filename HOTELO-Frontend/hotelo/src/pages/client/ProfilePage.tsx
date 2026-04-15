@@ -1,4 +1,3 @@
-// src/pages/client/ProfilePage.tsx
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/useAuth";
 import { clientService } from "../../services/client.service";
@@ -241,8 +240,7 @@ export default function ProfilePage() {
             • Compte créé le{" "}
             {new Date(user?.creeLe || "").toLocaleDateString("fr-FR")}
           </li>
-          <li>• Vous êtes connecté en tant que client</li>
-          <li>• Vous pouvez réserver des chambres dans nos hôtels partenaires</li>
+          <li>• Connecté en tant que client</li>
         </ul>
       </div>
     </div>

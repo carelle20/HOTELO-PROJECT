@@ -1,29 +1,22 @@
-// src/pages/admin/CatalogHotel.tsx
 import React, { useState, useEffect } from "react";
 import api from "../../api/axios";
 import { Trash2, Tag } from "lucide-react";
 import type { CatalogHotelProps, CatalogItem } from "../../interfaces/admin.interface";
 
 export default function CatalogManager({ type, title }: CatalogHotelProps) {
-  // L'état est typé comme un tableau de CatalogItem
   const [items, setItems] = useState<CatalogItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [form, setForm] = useState<{ nom: string; icone: string }>({ nom: "", icone: "" });
 
   useEffect(() => {
-    // Définition de la fonction de récupération à l'intérieur pour éviter l'erreur de dépendance ESLint
     const fetchItems = async (): Promise<void> => {
       try {
         setLoading(true);
-        // On effectue l'appel API
         const response = await api.get<CatalogItem[]>(`/admin/catalog/${type}`);
         
-        // On met à jour l'état seulement si la requête réussit
         setItems(response.data);
       } catch (error) {
-        // En cas d'erreur (ex: 401), on log l'erreur proprement
         console.error(error);
-        // On s'assure que items reste un tableau vide pour que le .map() ne crash pas
         setItems([]); 
       } finally {
         setLoading(false);
@@ -38,7 +31,6 @@ export default function CatalogManager({ type, title }: CatalogHotelProps) {
     try {
       await api.post(`/admin/catalog/${type}`, form);
       setForm({ nom: "", icone: "" });
-      // On recharge les données normalement après un ajout réussi
       const response = await api.get<CatalogItem[]>(`/admin/catalog/${type}`);
       setItems(response.data);
     } catch (error) {
@@ -77,7 +69,6 @@ export default function CatalogManager({ type, title }: CatalogHotelProps) {
         <div className="text-center py-10 text-gray-500">Chargement du catalogue...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Ici, items est garanti d'être un tableau (soit rempli, soit vide via le catch) */}
           {items.length > 0 ? (
             items.map((item) => (
               <div 

@@ -22,11 +22,11 @@ function SceneContent({
         <meshBasicMaterial map={texture} side={THREE.BackSide} />
       </Sphere>
 
-      {/* Rendu des points de navigation (Hotspots) */}
+      {/* Hotspots */}
       {scene.points?.map((point, index) => (
         <Html 
           key={index} 
-          // Conversion des coordonnées X, Y, Z individuelles en vecteur Three.js
+          // Conversion des coordonnées X, Y, Z 
           position={[point.positionX, point.positionY, point.positionZ]}
         >
           <button

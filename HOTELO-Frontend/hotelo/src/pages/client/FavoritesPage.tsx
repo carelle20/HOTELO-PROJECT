@@ -1,4 +1,3 @@
-// src/pages/client/FavoritesPage.tsx
 import { useEffect, useState } from "react";
 import { clientService } from "../../services/client.service";
 import { type Hotel } from "../../interfaces/client.interface";
@@ -55,7 +54,7 @@ export default function FavoritesPage() {
       <div>
         <h1 className="text-3xl font-bold text-[#0B1E3A] mb-2">Mes favoris</h1>
         <p className="text-gray-600">
-          Hôtels sauvegardés pour consultation ultérieure
+          Hôtels favoris
         </p>
       </div>
 

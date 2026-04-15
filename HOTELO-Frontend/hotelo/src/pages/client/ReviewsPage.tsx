@@ -1,4 +1,3 @@
-// src/pages/client/ReviewsPage.tsx
 import { useEffect, useState } from "react";
 import { clientService } from "../../services/client.service";
 import type { Review, Reservation } from "../../interfaces/client.interface";
@@ -124,7 +123,6 @@ export default function ReviewsPage() {
                 <option value={0}>-- Choisir un hôtel --</option>
                 {pastReservations.map((reservation) => (
                   <option key={reservation.hotelId} value={reservation.hotelId}>
-                    {reservation.hotelDetails?.nom}
                   </option>
                 ))}
               </select>

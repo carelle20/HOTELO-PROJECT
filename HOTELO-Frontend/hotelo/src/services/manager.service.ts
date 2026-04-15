@@ -1,4 +1,3 @@
-// src/services/manager.service.ts
 import api from "../api/axios";
 import type { ManagerDashboardStats, Hotel, RecentBooking, ImageHotel, ChambreData } from "../interfaces/manager.interface";
 
@@ -19,7 +18,7 @@ export const managerService = {
     return response.data;
   },
 
-  // Récuperation des hôtels du chef connecté //
+  // Récuperation des hôtels du chef connecté
   getMyHotels: async (): Promise<Hotel[]> => {
     const response = await api.get(`${API_URL}/hotels`);
     return response.data;
@@ -94,9 +93,4 @@ export const managerService = {
     return response.data;
   },
 
-  // Revenus mensuels
-  // getMonthlyRevenue: async () => {
-  //   const response = await api.get(`${API_URL}/stats/revenue`);
-  //   return response.data;
-  // },
 };

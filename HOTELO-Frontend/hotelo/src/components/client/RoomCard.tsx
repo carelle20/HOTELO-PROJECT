@@ -1,4 +1,3 @@
-// src/components/client/RoomCard.tsx
 import { type Chambre } from "../../interfaces/client.interface";
 import { Users, DollarSign } from "lucide-react";
 

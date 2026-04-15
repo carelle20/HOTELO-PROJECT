@@ -36,7 +36,6 @@ export default function AdminHotelManagers() {
     }
   };
 
-  // Correction de la recherche : On utilise l'optionnel chaining (?.) et on gère les valeurs nulles
   const filteredManagers = managers.filter(m => {
     const matchesTab = activeTab === "en_attente" ? !m.estValide : m.estValide;
     
@@ -67,11 +66,8 @@ export default function AdminHotelManagers() {
     }
   };
 
-  const handleReject = (id: number) => {
-    // Logique à implémenter au backend plus tard (ex: supprimer ou changer le statut)
-    toast.info("Fonctionnalité de refus en cours de développement", {
-        description: `ID concerné: ${id}`
-    });
+  const handleReject = () => {
+
   };
 
   if (isLoading) {
@@ -154,7 +150,7 @@ export default function AdminHotelManagers() {
                           <>
                             {/* Bouton Refuser amélioré avec texte */}
                             <button 
-                              onClick={() => handleReject(manager.idUtilisateur)}
+                              onClick={() => handleReject()}
                               className="flex items-center gap-1.5 px-3 py-2 text-rose-600 hover:bg-rose-50 rounded-lg transition-all text-xs font-bold"
                             >
                               <XCircle size={16} />

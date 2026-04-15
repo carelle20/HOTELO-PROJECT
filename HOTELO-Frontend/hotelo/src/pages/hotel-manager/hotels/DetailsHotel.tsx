@@ -9,7 +9,6 @@ import { toast } from 'react-hot-toast';
 import type { ChambreData } from '@/src/interfaces/manager.interface';
 import HotelExperience3D from '../../../components/HotelDetails/HotelExperience3D';
 
-// Mise à jour de l'interface pour inclure la 3D et les coordonnées
 interface HotelData {
   idHotel: number;
   nom: string;

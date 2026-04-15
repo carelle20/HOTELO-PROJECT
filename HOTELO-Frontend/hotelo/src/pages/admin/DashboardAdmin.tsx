@@ -1,4 +1,3 @@
-// src/pages/admin/DashboardAdmin.tsx
 import { useEffect, useState } from "react";
 import { 
   Hotel, Users, Clock, CalendarCheck, Loader2, AlertCircle 
@@ -8,17 +7,16 @@ import { adminService } from "../../services/admin.service";
 import { toast } from "sonner";
 
 export default function AdminDashboard() {
-  // 1. État pour stocker les statistiques réelles
+  // État pour stocker les statistiques réelles
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 2. Chargement des données au montage du composant
+  // Chargement des données 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         setIsLoading(true);
         const data = await adminService.getStats();
-        // C'est ici qu'on utilise setStats, ce qui règle ton erreur ESLint
         setStats(data);
       } catch (err) {
         console.error(err);
@@ -33,7 +31,7 @@ export default function AdminDashboard() {
     fetchDashboardData();
   }, []);
 
-  // 3. État de chargement
+  // État de chargement
   if (isLoading) {
     return (
       <div className="h-[60vh] flex flex-col items-center justify-center text-slate-400">
@@ -51,11 +49,10 @@ export default function AdminDashboard() {
           Tableau de bord
         </h1>
         <p className="text-gray-500 font-medium">
-          Vue globale de la plateforme <span className="text-[#0B1E3A] font-bold">HOTELO</span> au Cameroun
+          Vue globale de la plateforme <span className="text-[#0B1E3A] font-bold">HOTELO</span>
         </p>
       </div>
 
-      {/* KPI Cards utilisant les données du backend */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
         <KpiCard
           title="Hôtels enregistrés"
@@ -83,7 +80,6 @@ export default function AdminDashboard() {
         />
       </div>
 
-      {/* Reste du Dashboard (Activités et Tableaux) */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         <div className="xl:col-span-2 bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
           <h2 className="text-lg font-bold text-gray-800 mb-4">Activité récente</h2>
@@ -95,10 +91,6 @@ export default function AdminDashboard() {
 
         <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
           <h2 className="text-lg font-bold text-gray-800 mb-4">Validations prioritaires</h2>
-          <ul className="space-y-4">
-            {/* Ici on pourra boucler sur les hôtels en attente plus tard */}
-            <p className="text-xs text-center py-10 text-gray-400 italic">Aucun document urgent à traiter.</p>
-          </ul>
         </div>
       </div>
     </div>

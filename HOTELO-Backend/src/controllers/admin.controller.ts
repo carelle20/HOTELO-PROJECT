@@ -24,8 +24,6 @@ export const AdminController = {
     try {
       // On récupère l'id et on s'assure que c'est une string
       const idParam = req.params.idUtilisateur;
-      
-      // Sécurité TypeScript : si c'est un tableau, on prend le premier élément
       const idStr = Array.isArray(idParam) ? idParam[0] : idParam;
 
       if (!idStr) {
@@ -101,18 +99,15 @@ export const AdminController = {
     }
   },
 
-   // Met à jour le statut d'un hôtel (valider ou refuser)
+   // Met à jour le statut d'un hôtel
   async updateHotelStatus(req: Request, res: Response) {
     try {
       const { idHotel } = req.params;
       const { statut } = req.body;
-
-      // Validation simple des entrées
       if (!idHotel || !statut) {
         return res.status(400).json({ message: "ID hôtel et statut requis" });
       }
 
-      // Vérification que le statut est bien l'un des deux autorisés
       if (statut !== "valider" && statut !== "refuser") {
         return res.status(400).json({ message: "Statut invalide. Utilisez 'valider' ou 'refuser'." });
       }

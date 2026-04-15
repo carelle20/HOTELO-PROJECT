@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { adminService } from "../../services/admin.service";
 import api from "../../api/axios";
 
-// On définit le type basé sur ton schéma Prisma
 interface Hotel {
   idHotel: number;
   nom: string;

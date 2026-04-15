@@ -1,4 +1,3 @@
-// src/services/client.service.ts
 import api from "../api/axios";
 import type {
   ClientDashboardStats,
@@ -10,7 +9,6 @@ import type {
   Hotel,
 } from "../interfaces/client.interface";
 
-// URLs des endpoints du backend
 const API_BASE = "http://localhost:5000/api/client";
 
 export const clientService = {
@@ -125,9 +123,7 @@ export const clientService = {
     }
   },
 
-  /**
-   * Ajoute un avis pour un hôtel
-   */
+  /* Ajoute un avis pour un hôtel */
   addReview: async (data: ReviewRequest): Promise<Review> => {
     try {
       const response = await api.post<{ data: Review }>(
@@ -141,9 +137,7 @@ export const clientService = {
     }
   },
 
-  /**
-   * Récupère les avis laissés par le client
-   */
+  /* Récupère les avis laissés par le client */
   getMyReviews: async (): Promise<Review[]> => {
     try {
       const response = await api.get<{ data: Review[] }>(`${API_BASE}/reviews`);
@@ -154,9 +148,7 @@ export const clientService = {
     }
   },
 
-  /**
-   * Met à jour un avis
-   */
+  /* Met à jour un avis */
   updateReview: async (
     id: number,
     data: Partial<ReviewRequest>
@@ -173,9 +165,7 @@ export const clientService = {
     }
   },
 
-  /**
-   * Supprime un avis
-   */
+  /* Supprime un avis */
   deleteReview: async (id: number): Promise<void> => {
     try {
       await api.delete(`${API_BASE}/reviews/${id}`);
@@ -185,9 +175,7 @@ export const clientService = {
     }
   },
 
-  /**
-   * Met à jour le profil du client
-   */
+  /* Met à jour le profil du client */
   updateProfile: async (
     data: Partial<{
       prenom: string;
@@ -204,9 +192,7 @@ export const clientService = {
     }
   },
 
-  /**
-   * Récupère les détails du profil client
-   */
+  /* Récupère les détails du profil client */
   getProfile: async (): Promise<{ prenom: string; nom: string; email: string }> => {
     try {
       const response = await api.get<{ data: { prenom: string; nom: string; email: string } }>(`${API_BASE}/profile`);
@@ -217,9 +203,7 @@ export const clientService = {
     }
   },
 
-  /**
-   * Récupère les hôtels favoris du client
-   */
+  /* Récupère les hôtels favoris du client */
   getFavoriteHotels: async (): Promise<Hotel[]> => {
     try {
       const response = await api.get<{ data: Hotel[] }>(`${API_BASE}/favorites`);
@@ -230,9 +214,7 @@ export const clientService = {
     }
   },
 
-  /**
-   * Ajoute un hôtel aux favoris
-   */
+  /* Ajoute un hôtel aux favoris */
   addToFavorites: async (hotelId: number): Promise<{ success: boolean }> => {
     try {
       const response = await api.post<{ data: { success: boolean } }>(`${API_BASE}/favorites`, { hotelId });
@@ -243,9 +225,7 @@ export const clientService = {
     }
   },
 
-  /**
-   * Retire un hôtel des favoris
-   */
+  /* Retire un hôtel des favoris */
   removeFromFavorites: async (hotelId: number): Promise<{ success: boolean }> => {
     try {
       const response = await api.delete<{ data: { success: boolean } }>(`${API_BASE}/favorites/${hotelId}`);
@@ -256,9 +236,7 @@ export const clientService = {
     }
   },
 
-  /**
-   * Récupère les factures du client
-   */
+  /* Récupère les factures du client */
   getMyInvoices: async (): Promise<Array<{ idFacture: number; numeroFacture: string; montantTTC: number; statut: string }>> => {
     try {
       const response = await api.get<{ data: Array<{ idFacture: number; numeroFacture: string; montantTTC: number; statut: string }> }>(`${API_BASE}/invoices`);
@@ -269,9 +247,7 @@ export const clientService = {
     }
   },
 
-  /**
-   * Récupère une facture spécifique
-   */
+  /* Récupère une facture spécifique */
   getInvoiceById: async (id: number): Promise<{ idFacture: number; numeroFacture: string; montantTTC: number; statut: string }> => {
     try {
       const response = await api.get<{ data: { idFacture: number; numeroFacture: string; montantTTC: number; statut: string } }>(`${API_BASE}/invoices/${id}`);
@@ -282,9 +258,7 @@ export const clientService = {
     }
   },
 
-  /**
-   * Télécharge une facture en PDF
-   */
+  /* Télécharge une facture en PDF */
   downloadInvoice: async (id: number): Promise<string> => {
     try {
       const response = await api.get<{ data: { urlPDF: string } }>(`${API_BASE}/invoices/${id}/download`);
@@ -295,9 +269,7 @@ export const clientService = {
     }
   },
 
-  /**
-   * Vérifie la disponibilité des chambres
-   */
+  /* Vérifie la disponibilité des chambres */
   checkAvailability: async (
     chambreId: number,
     dateArrivee: string,

@@ -1,4 +1,3 @@
-// src/interfaces/admin.interface.ts
 export interface AdminStats {
   hotelsCount: number;
   managersCount: number;

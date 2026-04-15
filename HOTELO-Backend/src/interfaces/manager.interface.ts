@@ -101,32 +101,24 @@ export interface CreateChambre {
 
 export interface ManagerReservation {
   idReservation: number;
-
   client: {
     idUtilisateur: number;
     nom: string;
     email: string;
   };
-
   hotel: {
     idHotel: number;
     nom: string;
     ville: string;
   };
-
   chambre: {
     idChambre: number;
     nom: string;
   };
-
   dateArrivee: Date;
   dateDepart: Date;
-
   nombrePersonnes: number;
-
   montantTotal: number;
-
   statut: "en_attente" | "confirmée" | "annulée" | "complétée";
-
   creeLe: Date;
 }

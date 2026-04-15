@@ -1,4 +1,3 @@
-// src/hooks/useReservation.ts
 import { useState, useCallback } from "react";
 import { clientService } from "../services/client.service";
 import type { ReservationRequest, ReservationResponse } from "../interfaces/client.interface";

@@ -1,4 +1,3 @@
-// src/services/admin.service.ts
 import api from "../api/axios";
 
 const API_URL = "http://localhost:5000/api/admin";
@@ -11,25 +10,19 @@ export interface AdminStats {
 }
 
 export const adminService = {
-  /**
-   * Récupère les chiffres clés pour le dashboard
-   */
+  // stats pour le dashboard
   getStats: async (): Promise<AdminStats> => {
     const response = await api.get(`${API_URL}/dashboard`);
     return response.data;
   },
 
-  /**
-   * Récupère tous les responsables d'hôtels (pour ta page Responsables)
-   */
+  /* Récupère tous les responsables d'hôtels */
   getAllManagers: async () => {
     const response = await api.get(`${API_URL}/hotel-managers`);
     return response.data;
   },
 
-  /**
-   * Approuve un chef d'hôtel pour qu'il puisse publier
-   */
+  // valider un chef d'hotel
   validateManager: async (idUtilisateur: number) => {
     const response = await api.patch(`${API_URL}/valider-hotelier/${idUtilisateur}`, {
       estApprouve: true

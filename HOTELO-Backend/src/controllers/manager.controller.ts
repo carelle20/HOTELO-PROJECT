@@ -10,7 +10,7 @@ import { CreateChambre, CreateHotel } from "../interfaces/manager.interface";
 
 export const ManagerController = {
 
-  // Requete de creation d'un hotel
+  // fonction de creation d'un hotel
   async createHotel(req: AuthRequest, res: Response) {
     try {
       if (!req.body) {
@@ -45,7 +45,6 @@ export const ManagerController = {
         url: `/uploads/hotels/${file.filename}`,
         estPrincipale: index === 0 // La première image est considérée comme principale
       }));
-      // Appel au service
       const hotel = await ManagerService.createHotel(hotelData, chefHotelId, images);
 
       res.status(201).json(hotel);
@@ -55,7 +54,7 @@ export const ManagerController = {
     }
   },
 
-  // Requete de recuperation d'un hotel par son id
+  // fonction de recuperation d'un hotel par son id
   async getHotelById(req: AuthRequest, res: Response) {
     try {
       const idHotel = Number(req.params.idHotel);
@@ -67,7 +66,7 @@ export const ManagerController = {
     }
   },
 
-  // Requete de modification d'un hotel
+  // fonction de modification d'un hotel
   async updateHotel(req: AuthRequest, res: Response) {
     try {
       const idHotel = Number(req.params.idHotel);
@@ -77,7 +76,7 @@ export const ManagerController = {
         return res.status(400).json({ message: "Requête invalide" });
       }
       const raw = req.body;
-      // Transformer les IDs de FormData en tableau de numbers
+      // Transformer les IDs en tableau de numbres
       const formatIds = (val: string | string[] | undefined): number[] => {
         if (!val) return [];
         const array = Array.isArray(val) ? val : [val];
@@ -89,7 +88,6 @@ export const ManagerController = {
         pays: raw.pays,
         ville: raw.ville,
         adresse: raw.adresse,
-        // On convertit explicitement les strings en numbers
         latitude: raw.latitude ? Number(raw.latitude) : undefined,
         longitude: raw.longitude ? Number(raw.longitude) : undefined,
         nombreChambres: raw.nombreChambres ? Number(raw.nombreChambres) : undefined,
@@ -106,7 +104,7 @@ export const ManagerController = {
     }
   },
 
-  // Requete de recuperation de la liste des hotels du chef connecté
+  // fonction de recuperation de la liste des hotels du chef connecté
   async getMyHotels(req: AuthRequest, res: Response) {
     try {
       if (!req.user || !req.user.id) {
@@ -120,21 +118,7 @@ export const ManagerController = {
     }
   },
 
-  // Requete de soumission d'un hotel pour validation
-  // async submitHotel(req: AuthRequest, res: Response) {
-  //   try {
-  //     if (!req.user || !req.user.id) {
-  //       return res.status(401).json({ message: "Utilisateur non authentifié" });
-  //     }
-  //     const { idHotel } = req.params;
-  //     await ManagerService.submitHotel(Number(idHotel), req.user.id);
-  //     return res.json({ message: "Hôtel soumis avec succès" });
-  //   } catch (error: any) {
-  //     return res.status(400).json({ message: "Erreur lors de la soumission" });
-  //   }
-  // },
-
-  // Requete de creation d'une chambre
+  // fonction de creation d'une chambre
   async addChambre(req: AuthRequest, res: Response) {
     try {
       const hotelId = Number(req.params.idHotel);
@@ -166,7 +150,7 @@ export const ManagerController = {
     }
   },
 
-  // Requete de recuperation de la liste des chambres d'un hotel
+  // fonction de recuperation de la liste des chambres d'un hotel
   async getChambres(req: AuthRequest, res: Response) {
     try {
       const { idHotel } = req.params;
@@ -178,7 +162,7 @@ export const ManagerController = {
     }
   },
 
-  // Requete d'upload d'une image pour un hotel
+  // fonction d'upload d'une image pour un hotel
   async uploadHotelImages(req: AuthRequest, res: Response) {
     try {
       const { idHotel } = req.params;
@@ -196,7 +180,7 @@ export const ManagerController = {
     }
   },
 
-  // Requete de recuperation de la liste des équipements et services
+  // fonction de recuperation de la liste des équipements et services
   async getCatalogues(req: AuthRequest, res: Response) {
     try {
       const data = await ManagerService.getCatalogues();
@@ -206,7 +190,7 @@ export const ManagerController = {
     }
   },
 
-  // Requete d'assignation des équipements et services à un hotel
+  // fonction d'assignation des équipements et services à un hotel
   async setHotelCatalog(req: AuthRequest, res: Response) {
     try {
       const { idHotel } = req.params;
@@ -224,7 +208,7 @@ export const ManagerController = {
     }
   },
 
-  /* Récupérer les réservations en attente de l'hôtel */
+  /* fonction de recuperation des réservations en attente de l'hôtel */
   async getPendingReservations(req: AuthRequest, res: Response) {
     try {
       const chefHotelId = req.user?.id;
@@ -250,7 +234,6 @@ export const ManagerController = {
       }
       const { id } = req.params;
       const reservation = await reservationService.confirmerReservation(Number(id), chefHotelId);
-      // Créer une entrée de caisse pour la réservation confirmée
       if (reservation) {
         await caisseService.creerEntree({
           type: "revenus",
@@ -305,8 +288,6 @@ export const ManagerController = {
     }
   },
 
-  // === FACTURES ===
-
   /* Récupérer les factures de l'hôtel */
   async getHotelInvoices(req: AuthRequest, res: Response) {
     try {
@@ -360,8 +341,6 @@ export const ManagerController = {
       return res.status(500).json({ message });
     }
   },
-
-  // === CAISSE ===
 
   /* Récupérer le dashboard de caisse */
   async getCaisseDashboard(req: AuthRequest, res: Response) {
@@ -469,8 +448,6 @@ export const ManagerController = {
     }
   },
 
-  // === AVIS ===
-
   /* Récupérer les avis de l'hôtel */
   async getHotelReviews(req: AuthRequest, res: Response) {
     try {
@@ -502,30 +479,6 @@ export const ManagerController = {
     }
   },
 
-  /* Modérer un avis */
-  async moderateReview(req: AuthRequest, res: Response) {
-    try {
-      const { id } = req.params;
-      const { estModere } = req.body;
-      if (estModere === undefined) {
-        return res.status(400).json({ message: "Le statut est requis" });
-      }
-      const avis = await avisService.modererAvis(Number(id), estModere);
-      return res.status(200).json({
-        success: true,
-        message: "Avis modéré",
-        data: avis,
-      });
-    } catch (error: unknown) {
-      console.error("Erreur moderateReview:", error);
-      const message =
-        error instanceof Error ? error.message : "Erreur serveur";
-      return res.status(500).json({ message });
-    }
-  },
-
-  // === STATISTIQUES GLOBALES ===
-
   /* Récupérer les statistiques de réservation */
   async getReservationStats(req: AuthRequest, res: Response) {
     try {
@@ -539,7 +492,7 @@ export const ManagerController = {
     }
   },
 
-  /* Dashboard générique pour tous les hôtels du chef hôtel (SANS paramètres) */
+  /* Dashboard générique pour tous les hôtels du chef hôtel */
   async getDashboardGeneral(req: AuthRequest, res: Response) {
     try {
       if (!req.user?.id) {
@@ -569,8 +522,6 @@ export const ManagerController = {
       }
       
       const hotelIds = hotels.map(h => h.idHotel);
-      
-      // Récupérer les stats pour tous les hôtels en parallèle
       const statsPromises = hotelIds.map(hotelId => 
         Promise.all([
           reservationService.getStatsReservations(hotelId).catch(() => ({ totalReservations: 0, confirmees: 0, pending: 0 })),
@@ -614,14 +565,13 @@ export const ManagerController = {
     }
   },
 
-  /* Récupérer les réservations pending pour TOUS les hôtels du chef (SANS paramètres) */
+  /* Récupérer les réservations en attente pour tous les hôtels du chef */
   async getAllPendingReservations(req: AuthRequest, res: Response) {
     try {
       if (!req.user?.id) {
         return res.status(401).json({ message: "Non authentifié" });
       }
-      const chefHotelId = req.user.id;
-      
+      const chefHotelId = req.user.id;     
       // Récupérer tous les hôtels du chef
       const hotels = await ManagerService.getMyHotels(chefHotelId);
       

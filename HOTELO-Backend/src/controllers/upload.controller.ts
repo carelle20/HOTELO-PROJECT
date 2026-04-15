@@ -1,13 +1,9 @@
-// backend/src/controllers/upload.controller.ts
 import { Request, Response } from "express";
 
 export const UploadController = {
-  /**
-   * Traite les fichiers uploadés et renvoie les URLs structurées
-   */
+
   async uploadDossierFiles(req: Request, res: Response) {
     try {
-      // Les fichiers sont injectés par Multer dans req.files
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
       if (!files || Object.keys(files).length === 0) {
@@ -17,15 +13,13 @@ export const UploadController = {
         });
       }
 
-      // Construction de la réponse avec les chemins relatifs
-      // Ces URLs seront celles enregistrées en BDD
       const baseUrl = `${req.protocol}://${req.get("host")}`;
       
       const formattedResponse = {
-        // Images classiques (Hôtel)
+        // Images hotels
         images: files["images"]?.map((file, index) => ({
           url: `${baseUrl}/uploads/hotels/${file.filename}`,
-          estPrincipale: index === 0 // La première image est définie par défaut comme principale
+          estPrincipale: index === 0 
         })) || [],
 
         // Images des chambres
@@ -33,7 +27,7 @@ export const UploadController = {
           url: `/uploads/chambres/${file.filename}`
         })) || [],
         
-        // Documents (PDF, etc.)
+        // Documents
         documents: files["documents"]?.map((file) => ({
           url: `${baseUrl}/uploads/documents/${file.filename}`,
           type: file.originalname.includes("registre") ? "REGISTRE_COMMERCE" : "AUTRE"

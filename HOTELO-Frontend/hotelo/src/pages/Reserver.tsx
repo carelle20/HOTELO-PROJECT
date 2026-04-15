@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Calendar, Users, ArrowLeft, Loader, Clock } from "lucide-react";
+import { Calendar, Users, ArrowLeft, Loader } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/useAuth";
 import { clientService } from "../services/client.service";
@@ -22,7 +22,6 @@ export default function Reservation() {
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
   
-  // État pour le formulaire - simplifié comme Booking/Airbnb
   const [formData, setFormData] = useState({
     dateArrivee: "",
     dateDepart: "",
@@ -44,12 +43,10 @@ export default function Reservation() {
     const fetchRoomData = async () => {
       if (!id) return;
       try {
-        // À adapter: récupérer les vraies données de la chambre depuis l'API
-        // Pour l'instant, données par défaut. À remplacer par votre API réelle
         setRoomData({
           id: parseInt(id),
           nom: "Chambre Standard",
-          prix: 50000, // À remplacer par les vraies données depuis l'API
+          prix: 50000,
           capacite: 2,
           hotelId: 0,
           description: "Chambre confortable"
@@ -121,7 +118,6 @@ export default function Reservation() {
     }
   };
 
-  // Vérifier la date minimale (aujourd'hui ou plus tard)
   const today = new Date().toISOString().split('T')[0];
 
   return (
@@ -132,7 +128,6 @@ export default function Reservation() {
     >
       <div className="max-w-2xl mx-auto">
         
-        {/* Bouton Retour */}
         <button 
           onClick={() => navigate(-1)}
           className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-8 transition-colors cursor-pointer"
@@ -143,7 +138,7 @@ export default function Reservation() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
-          {/* COLONNE GAUCHE : Résumé (Sticky) */}
+          {/* COLONNE GAUCHE : Résumé */}
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -196,10 +191,6 @@ export default function Reservation() {
                   </div>
                 )}
 
-                <div className="bg-blue-50 p-3 rounded-lg text-xs text-blue-700 flex gap-2">
-                  <Clock size={16} className="shrink-0 mt-0.5" />
-                  <p>Arrivée à partir de 14h00 • Départ avant 11h00</p>
-                </div>
               </div>
             </div>
           </motion.div>
@@ -213,7 +204,6 @@ export default function Reservation() {
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               
-              {/* Bloc 1 : Dates de séjour */}
               <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-100">
                 <h2 className="text-lg font-bold text-slate-900 mb-5 flex items-center gap-2">
                   <Calendar size={20} className="text-blue-600" />
@@ -256,7 +246,6 @@ export default function Reservation() {
                 )}
               </div>
 
-              {/* Bloc 2 : Nombre de voyageurs */}
               <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-100">
                 <h2 className="text-lg font-bold text-slate-900 mb-5 flex items-center gap-2">
                   <Users size={20} className="text-blue-600" />
@@ -273,7 +262,7 @@ export default function Reservation() {
                       onClick={() => setFormData({...formData, nombrePersonnes: Math.max(1, formData.nombrePersonnes - 1)})}
                       className="w-10 h-10 rounded-lg border border-slate-300 hover:bg-slate-100 transition flex items-center justify-center font-bold text-slate-700"
                     >
-                      −
+                      -
                     </button>
                     <input 
                       type="number" 
@@ -316,19 +305,9 @@ export default function Reservation() {
                 </div>
               </div>
 
-              {/* Bloc 4 : Conditions */}
-              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm text-amber-800">
-                <p className="font-semibold mb-2">Conditions</p>
-                <ul className="space-y-1 text-xs">
-                  <li>✓ Annulation gratuite jusqu'à 48h avant l'arrivée</li>
-                  <li>✓ Aucun frais caché</li>
-                  <li>✓ Confirmation immédiate de la réservation</li>
-                </ul>
-              </div>
 
               {/* Bouton Confirmation */}
-              <button 
-                type="submit"
+              <button type="submit"
                 disabled={isSubmitting || nights <= 0 || !formData.dateArrivee || !formData.dateDepart}
                 className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white py-4 rounded-xl font-bold text-lg transition-all shadow-lg flex items-center justify-center gap-2"
               >

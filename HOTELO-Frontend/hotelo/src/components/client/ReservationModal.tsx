@@ -1,4 +1,3 @@
-// src/components/client/ReservationModal.tsx
 import { useState } from "react";
 import { useAuth } from "../../context/useAuth";
 import { useReservation } from "../../hooks/useReservation";

@@ -1,4 +1,3 @@
-// src/pages/auth/Register.tsx
 import { useState, useMemo } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -104,7 +103,7 @@ export default function Register() {
             <p className="text-slate-500 mt-2 font-medium italic text-sm">Sélectionnez votre profil</p>
           </div>
 
-          {/* SÉLECTEUR DE RÔLE (Prioritaire) */}
+          {/* SÉLECTEUR DE RÔLE */}
           <div className="grid grid-cols-2 gap-3 bg-slate-100 p-1.5 rounded-2xl mb-8">
             <button 
               type="button" 

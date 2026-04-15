@@ -1,4 +1,3 @@
-// src/routes/ClientRoutes.tsx
 import type { ReactElement } from "react";
 import { Route, Navigate } from "react-router-dom";
 import ClientLayout from "../layouts/ClientLayout";
@@ -103,7 +102,6 @@ export const ClientRoutes: ReactElement[] = [
     }
   />,
 
-  // Redirect /client to /client/dashboard
   <Route
     key="client-redirect"
     path="/client"

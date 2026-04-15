@@ -1,4 +1,3 @@
-// src/components/client/ReservationCard.tsx
 import { type Reservation } from "../../interfaces/client.interface";
 import {
   Calendar,

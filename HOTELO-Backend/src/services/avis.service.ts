@@ -16,9 +16,7 @@ export const avisService = {
     }) as unknown as Avis;
   },
 
-  /**
-   * Récupérer les avis d'un client
-   */
+  /* Récupérer les avis d'un client */
   async getAvisClient(clientId: number): Promise<Avis[]> {
     try {
       const avis = await prisma.avis.findMany({
@@ -55,9 +53,7 @@ export const avisService = {
     }
   },
 
-  /**
-   * Récupérer les avis d'un hôtel
-   */
+  /* Récupérer les avis d'un hôtel */
   async getAvisHotel(hotelId: number, estModere = true): Promise<Avis[]> {
     try {
       const avis = await prisma.avis.findMany({
@@ -90,9 +86,7 @@ export const avisService = {
     }
   },
 
-  /**
-   * Récupérer un avis spécifique
-   */
+  /* Récupérer un avis spécifique */
   async getAvisById(avisId: number): Promise<Avis | null> {
     try {
       const avis = await prisma.avis.findUnique({
@@ -121,16 +115,13 @@ export const avisService = {
     }
   },
 
-  /**
-   * Mettre à jour un avis
-   */
+  /* Mettre à jour un avis */
   async mettreAJourAvis(
     avisId: number,
     clientId: number,
     data: Partial<AvisRequest>
   ): Promise<Avis> {
     try {
-      // Vérifier que l'avis appartient au client
       const avis = await prisma.avis.findUnique({
         where: { idAvis: avisId },
       });
@@ -138,12 +129,10 @@ export const avisService = {
       if (!avis || avis.clientId !== clientId) {
         throw new Error("Avis non trouvé ou accès non autorisé");
       }
-
       // Valider la note si fournie
       if (data.note && (data.note < 1 || data.note > 5)) {
         throw new Error("La note doit être entre 1 et 5");
       }
-
       // Mettre à jour
       const updated = await prisma.avis.update({
         where: { idAvis: avisId },
@@ -176,9 +165,7 @@ export const avisService = {
     }
   },
 
-  /**
-   * Supprimer un avis
-   */
+  /* Supprimer un avis */
   async supprimerAvis(avisId: number, clientId: number): Promise<void> {
     try {
       // Vérifier que l'avis appartient au client
@@ -199,9 +186,7 @@ export const avisService = {
     }
   },
 
-  /**
-   * Obtenir les statistiques d'avis pour un hôtel
-   */
+  /* Obtenir les statistiques d'avis pour un hôtel */
   async getStatsAvis(hotelId: number): Promise<any> {
     try {
       // 1. Sécurité : Conversion forcée en entier pour Prisma
@@ -263,43 +248,4 @@ export const avisService = {
     }
   },
 
-  /**
-   * Modérer un avis (admin/chef hôtel)
-   */
-  async modererAvis(avisId: number, estModere: boolean): Promise<Avis> {
-    try {
-      const avis = await prisma.avis.findUnique({
-        where: { idAvis: avisId },
-      });
-
-      if (!avis) {
-        throw new Error("Avis non trouvé");
-      }
-
-      const updated = await prisma.avis.update({
-        where: { idAvis: avisId },
-        data: { estModere },
-        include: {
-          client: {
-            select: {
-              idUtilisateur: true,
-              prenom: true,
-              nom: true,
-            },
-          },
-          hotel: {
-            select: {
-              idHotel: true,
-              nom: true,
-            },
-          },
-        },
-      });
-
-      return updated as unknown as Avis;
-    } catch (error) {
-      console.error("Erreur lors de la modération de l'avis:", error);
-      throw error;
-    }
-  },
 };

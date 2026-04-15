@@ -1,4 +1,3 @@
-// src/components/admin/AdminSidebar.tsx
 import { NavLink, useNavigate } from "react-router-dom";
 import { 
   LayoutDashboard, Users, Hotel, UserCheck, CalendarCheck, 

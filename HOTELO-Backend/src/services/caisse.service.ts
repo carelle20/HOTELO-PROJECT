@@ -29,8 +29,8 @@ export const caisseService = {
           montant: data.montant,
           statut: "validée",
           hotelId: data.hotelId,
-          utilisateurId: 1, // À définir selon le contexte (le chef hôtel qui la crée)
-          creePar: 1, // À définir selon le contexte (le chef hôtel qui la crée)
+          utilisateurId: 1,
+          creePar: 1, 
           reservationId: data.reservationId,
         },
       });
@@ -42,9 +42,7 @@ export const caisseService = {
     }
   },
 
-  /**
-   * Récupérer les entrées de caisse d'un hôtel
-   */
+  /* Récupérer les entrées de caisse d'un hôtel */
   async getEntreesHotel(
     hotelId: number,
     type?: TypeCaisse,
@@ -72,7 +70,6 @@ export const caisseService = {
 
   /* Obtenir les statistiques de caisse pour un hôtel */
   async getStatistiquesHotel(hotelId: number) {
-    // Utilisation de Promise.all pour exécuter les requêtes en parallèle (plus rapide)
     const [revenus, depenses, reservations] = await Promise.all([
       prisma.caisse.aggregate({
         where: { hotelId, type: "revenus", statut: "validée" },
@@ -97,13 +94,11 @@ export const caisseService = {
       solde: totalRev - totalDep,
       revenus: totalRev,
       depenses: totalDep,
-      detailsReservations: reservations // Donne le compte par statut (confirmé, attente, etc.)
+      detailsReservations: reservations 
     };
   },
 
-  /**
-   * Obtenir le solde d'un hôtel
-   */
+  /* Obtenir le solde d'un hôtel */
   async getSolde(hotelId: number): Promise<number> {
     try {
       const revenusResult = await prisma.caisse.aggregate({
@@ -134,9 +129,7 @@ export const caisseService = {
     }
   },
 
-  /**
-   * Obtenir les revenus des réservations confirmées
-   */
+  /* Obtenir les revenus des réservations confirmées */
   async getRevenusReservations(hotelId: number): Promise<number> {
     try {
       const result = await prisma.reservation.aggregate({
@@ -173,9 +166,7 @@ export const caisseService = {
     });
   },
 
-  /**
-   * Récupérer une entrée de caisse
-   */
+  /* Récupérer une entrée de caisse */
   async getEntree(caisseId: number): Promise<EntreeCaisse | null> {
     try {
       const entree = await prisma.caisse.findUnique({
@@ -189,9 +180,7 @@ export const caisseService = {
     }
   },
 
-  /**
-   * Mettre à jour une entrée de caisse
-   */
+  /* Mettre à jour une entrée de caisse */
   async mettreAJourEntree(
     caisseId: number,
     data: Partial<EntreeCaisseRequest>
@@ -222,9 +211,7 @@ export const caisseService = {
     }
   },
 
-  /**
-   * Supprimer une entrée de caisse
-   */
+  /* Supprimer une entrée de caisse */
   async supprimerEntree(caisseId: number): Promise<void> {
     try {
       const entree = await prisma.caisse.findUnique({
@@ -244,16 +231,13 @@ export const caisseService = {
     }
   },
 
-  /**
-   * Générer un rapport de caisse par période
-   */
+  /* Générer un rapport de caisse par période */
   async getRapportCaisse(
     hotelId: number,
     dateDebut: Date,
     dateFin: Date
   ): Promise<any> {
     try {
-      // Revenus par type
       const revenusParType = await prisma.caisse.groupBy({
         by: ["type"],
         where: {
@@ -268,7 +252,6 @@ export const caisseService = {
         _sum: { montant: true },
       });
 
-      // Dépenses par type
       const depensesParType = await prisma.caisse.groupBy({
         by: ["type"],
         where: {
@@ -351,9 +334,7 @@ export const caisseService = {
     }
   },
 
-  /**
-   * Obtenir un tableau de bord caisse pour le chef hôtel
-   */
+  /* Obtenir un tableau de bord caisse pour le chef hôtel */
   async getDashboardCaisse(hotelId: number): Promise<any> {
     try {
       const stats = await this.getStatistiquesHotel(hotelId);

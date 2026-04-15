@@ -1,10 +1,7 @@
-// ========== TYPES ÉNUMÉRÉS ==========
-
 export type StatutReservation = "en_attente" | "confirmée" | "annulée" | "complétée";
 export type StatutFacture = "générée" | "payée" | "annulée";
 export type TypeCaisse = "revenus" | "dépenses" | "ajustement";
 
-// ========== RÉSERVATION ==========
 
 export interface CreateReservationRequest {
   chambreId: number;
@@ -67,12 +64,10 @@ export interface Reservation {
   factures?: Facture[];
 }
 
-// ========== FACTURE ==========
-
 export interface FactureRequest {
   reservationId: number;
   montantHT: number;
-  tva?: number; // Pourcentage, par défaut 20%
+  tva?: number; 
 }
 
 export interface Facture {
@@ -89,7 +84,6 @@ export interface Facture {
   urlPDF?: string;
   creeLe: Date;
   misAJourLe: Date;
-  // Relations
   reservation?: Reservation;
   client?: {
     idUtilisateur: number;
@@ -102,8 +96,6 @@ export interface Facture {
     nom: string;
   };
 }
-
-// ========== CAISSE ==========
 
 export interface EntreeCaisseRequest {
   type: TypeCaisse;
@@ -138,12 +130,10 @@ export interface StatistiquesCaisse {
   montantEnAttente: number;
 }
 
-// ========== DISPONIBILITÉ ==========
-
 export interface DisponibiliteRequest {
   chambreId: number;
-  dateArrivee: string; // ISO date
-  dateDepart: string; // ISO date
+  dateArrivee: string; 
+  dateDepart: string; 
 }
 
 export interface DisponibiliteChambre {
@@ -161,15 +151,13 @@ export interface ReponseDisponibilite {
   dateDepart: string;
   disponible: boolean;
   raisons: string[];
-  nuitsSansDisponibilite: string[]; // Dates indisponibles
+  nuitsSansDisponibilite: string[]; 
 }
-
-// ========== AVIS / REVIEW ==========
 
 export interface AvisRequest {
   titre?: string;
   commentaire: string;
-  note: number; // 1-5
+  note: number; 
   hotelId: number;
   reservationId?: number;
 }
@@ -185,7 +173,6 @@ export interface Avis {
   estModere: boolean;
   creeLe: Date;
   misAJourLe: Date;
-  // Relations
   client?: {
     idUtilisateur: number;
     prenom: string;
@@ -197,8 +184,6 @@ export interface Avis {
   };
 }
 
-// ========== DASHBOARD CLIENT ==========
-
 export interface DashboardClientResponse {
   totalReservations: number;
   upcomingStays: number;
@@ -208,8 +193,6 @@ export interface DashboardClientResponse {
   recentReviews: Avis[];
 }
 
-// ========== DASHBOARD CHEF HÔTEL ==========
-
 export interface DashboardChefHotelResponse {
   totalReservations: number;
   reservationEnAttente: number;
@@ -218,30 +201,24 @@ export interface DashboardChefHotelResponse {
   montantEnAttente: number;
   montantConfirme: number;
   caisseTotal: number;
-  taux_occupation: number; // Pourcentage
+  taux_occupation: number; 
   note_moyenne: number;
   reservationsRecentes: Reservation[];
   entreesCaisseRecentes: EntreeCaisse[];
   statistiques: StatistiquesCaisse;
 }
 
-// ========== VALIDATION ==========
-
 export interface ValidationReservationRequest {
   idReservation: number;
-  valider: boolean; // true = confirmer, false = refuser
+  valider: boolean; 
   motifRefus?: string;
 }
 
-// ========== PAIEMENT ==========
-
 export interface ConfirmationPaiementRequest {
   idFacture: number;
-  methodePaiement: string; // "carte", "virement", "especes", etc.
-  datePaiement?: string; // ISO date
+  methodePaiement: string; 
+  datePaiement?: string;
 }
-
-// ========== STATISTIQUES ==========
 
 export interface StatsReservation {
   total: number;
@@ -252,13 +229,11 @@ export interface StatsReservation {
     parMois: { mois: string; montant: number }[];
   };
   occupancy: {
-    taux: number; // Pourcentage
+    taux: number; 
     nuitesReservees: number;
     nuitesTotales: number;
   };
 }
-
-// ========== TYPES DE RÉPONSE API ==========
 
 export interface ApiResponse<T> {
   success: boolean;

@@ -1,4 +1,3 @@
-// src/components/client/TopbarClient.tsx
 import { useAuth } from "../../context/useAuth";
 import { Bell, User, Settings, LogOut } from "lucide-react";
 import { useState } from "react";

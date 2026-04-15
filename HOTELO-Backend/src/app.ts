@@ -25,7 +25,7 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads"))); //rend 
 app.use("/api/auth", authRoutes);
 app.use("/api/public", publicRoutes);
 
-// Routes protégées (nécessitent authentification)
+// Routes protégées
 app.use("/api/client", clientRoutes);
 
 // Routes administrateur

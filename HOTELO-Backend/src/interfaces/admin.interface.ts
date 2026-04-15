@@ -1,5 +1,3 @@
-// src/interfaces/admin.interface.ts
-
 export interface AdminStats {
   hotelsCount: number;
   managersCount: number;
@@ -22,7 +20,6 @@ export interface HotelManager {
   } | null;
 }
 
-// interface pour la réponse de la mise à jour du statut d'un chef d'hôtel
 export interface UpdateStatusResponse {
   success: boolean;
   message: string;

@@ -39,7 +39,7 @@ export const clientService = {
         }
     },
 
-    // Récupérer les hôtels pour la page d'accueil (public)
+    // Récupérer les hôtels pour la page d'accueil
     async getHotelsForHomepage(): Promise<Hotel[]> {
         try {
             const hotels = await prisma.hotel.findMany({

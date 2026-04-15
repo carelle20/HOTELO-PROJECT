@@ -10,7 +10,7 @@ interface UseHotelsState {
 }
 
 /**
- * Hook personnalisé pour récupérer tous les hôtels publiés
+ * Hook pour récupérer tous les hôtels publiés
  * @returns {UseHotelsState} État des hôtels, chargement et erreur
  */
 export const useHotels = (): UseHotelsState => {

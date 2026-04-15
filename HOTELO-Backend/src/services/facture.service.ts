@@ -6,9 +6,7 @@ import {
 } from "../interfaces/reservation.interface";
 
 export const factureService = {
-  /**
-   * Générer le numéro de facture unique
-   */
+  /* Générer le numéro de facture unique */
   async genererNumeroFacture(hotelId: number): Promise<string> {
     const date = new Date();
     const annee = date.getFullYear();
@@ -20,15 +18,12 @@ export const factureService = {
     return numero;
   },
 
-  /**
-   * Créer une facture pour une réservation
-   */
+  /* Créer une facture pour une réservation */
   async creerFacture(
     reservationId: number,
     tva: number = 20
   ): Promise<Facture> {
     try {
-      // Récupérer la réservation
       const reservation = await prisma.reservation.findUnique({
         where: { idReservation: reservationId },
         include: {
@@ -99,9 +94,7 @@ export const factureService = {
     }
   },
 
-  /**
-   * Récupérer une facture
-   */
+  /* Récupérer une facture */
   async getFacture(factureId: number): Promise<Facture | null> {
     try {
       const facture = await prisma.facture.findUnique({
@@ -155,9 +148,7 @@ export const factureService = {
     }
   },
 
-  /**
-   * Récupérer les factures d'un client
-   */
+  /* Récupérer les factures d'un client */
   async getFacturesClient(clientId: number): Promise<Facture[]> {
     try {
       const factures = await prisma.facture.findMany({
@@ -203,9 +194,7 @@ export const factureService = {
     }
   },
 
-  /**
-   * Récupérer les factures d'un hôtel
-   */
+  /* Récupérer les factures d'un hôtel */
   async getFacturesHotel(hotelId: number): Promise<Facture[]> {
     try {
       const factures = await prisma.facture.findMany({
@@ -261,7 +250,7 @@ export const factureService = {
       // Mettre à jour la réservation liée
       await tx.reservation.update({
         where: { idReservation: facture.reservationId },
-        data: { statut: "confirmée" } // Le paiement confirme la réservation
+        data: { statut: "confirmée" } 
       });
       // Créer l'entrée de caisse
       await tx.caisse.create({
@@ -280,9 +269,7 @@ export const factureService = {
     });
   },
 
-  /**
-   * Annuler une facture
-   */
+  /* Annuler une facture */
   async annulerFacture(
     factureId: number,
     motif: string
@@ -328,9 +315,7 @@ export const factureService = {
     }
   },
 
-  /**
-   * Obtenir les statistiques de facturation
-   */
+  /* Obtenir les statistiques de facturation */
   async getStatsFacturation(hotelId: number): Promise<any> {
     try {
       const total = await prisma.facture.count({
@@ -371,9 +356,7 @@ export const factureService = {
     }
   },
 
-  /**
-   * Générer un PDF pour la facture
-   */
+  /* Générer un PDF pour la facture */
   async genererPDFFacture(factureId: number): Promise<string> {
     try {
       const facture = await this.getFacture(factureId);
@@ -381,9 +364,6 @@ export const factureService = {
       if (!facture) {
         throw new Error("Facture non trouvée");
       }
-
-      // TODO: Intégrer une librairie de génération PDF (pdfkit, puppeteer, etc.)
-      // Pour l'instant, retourner un URL simulé
       const urlPDF = `/factures/${facture.numeroFacture}.pdf`;
 
       // Mettre à jour le champ urlPDF

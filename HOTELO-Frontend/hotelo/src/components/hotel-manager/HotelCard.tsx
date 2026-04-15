@@ -138,7 +138,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
           </p>
         </div>
 
-        {/* NOUVELLE LIGNE : Statut et Nombre de chambres (En bas de l'info) */}
+        {/* Statut et Nombre de chambres */}
         <div className="flex items-center justify-between pt-2 border-t border-slate-50">
           <div className={`flex items-center gap-1.5 ${status.text} text-[10px] font-bold uppercase`}>
             {status.icon}

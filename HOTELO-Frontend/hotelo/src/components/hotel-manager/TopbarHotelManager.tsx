@@ -13,7 +13,7 @@ import { useAuth } from "../../context/useAuth";
 
 export default function Header() {
   const [openProfile, setOpenProfile] = useState(false);
-  const { user, logout } = useAuth(); // Récupération des données réelles
+  const { user, logout } = useAuth(); 
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -51,7 +51,7 @@ export default function Header() {
           <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
         </button>
 
-        {/* Profile avec détection de survol (Hover) */}
+        {/* Profil */}
         <div 
           className="relative"
           onMouseEnter={() => setOpenProfile(true)}

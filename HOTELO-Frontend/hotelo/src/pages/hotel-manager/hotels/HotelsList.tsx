@@ -3,7 +3,6 @@ import api from '../../../api/axios';
 import HotelCard from '../../../components/hotel-manager/HotelCard';
 import { Search, Filter } from 'lucide-react';
 
-// Interface pour typer la liste (optionnel mais recommandé)
 interface HotelData {
   idHotel: number;
   nom: string;
@@ -25,7 +24,6 @@ const HotelList: React.FC = () => {
   useEffect(() => {
     const fetchHotels = async () => {
       try {
-        // Cette route doit retourner les hôtels du manager connecté
         const res = await api.get<HotelData[]>('/manager/hotels');
         setHotels(res.data);
       } catch (err) {
@@ -99,7 +97,6 @@ const HotelList: React.FC = () => {
         <div className="text-center py-24 bg-white rounded-3xl border-2 border-dashed border-gray-100 shadow-sm">
           <div className="text-5xl mb-4 text-gray-200"></div>
           <h3 className="text-xl font-bold text-gray-800">Aucun hôtel enregistré</h3>
-          <p className="text-gray-400 mt-2">Commencez par ajouter votre premier établissement.</p>
         </div>
       )}
     </div>

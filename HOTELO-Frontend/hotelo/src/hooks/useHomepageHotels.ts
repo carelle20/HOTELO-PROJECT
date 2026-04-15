@@ -10,7 +10,7 @@ interface UseHomepageHotelsState {
 }
 
 /**
- * Hook personnalisé pour récupérer les 6 derniers hôtels pour la page d'accueil
+ * Hook pour récupérer les hôtels pour la page d'accueil
  * @returns {UseHomepageHotelsState} État des hôtels, chargement et erreur
  */
 export const useHomepageHotels = (): UseHomepageHotelsState => {

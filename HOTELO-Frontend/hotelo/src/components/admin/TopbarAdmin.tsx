@@ -1,4 +1,3 @@
-// src/components/admin/AdminTopbar.tsx
 import { useState } from "react";
 import { Bell, ChevronDown, Search, LogOut, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,7 +5,7 @@ import { useAuth } from "../../context/useAuth";
 
 export default function AdminTopbar() {
   const [openProfile, setOpenProfile] = useState(false);
-  const { user, logout } = useAuth(); // Récupération des données réelles
+  const { user, logout } = useAuth(); 
   const navigate = useNavigate();
 
   const handleLogout = () => {

@@ -1,4 +1,3 @@
-// src/pages/client/SettingsPage.tsx
 import { useState } from "react";
 import { Lock, Bell, Eye, LogOut } from "lucide-react";
 import { useAuth } from "../../context/useAuth";
@@ -166,9 +165,6 @@ export default function SettingsPage() {
 
       {/* Logout */}
       <div className="bg-red-50 rounded-lg border border-red-200 p-6">
-        <h2 className="text-xl font-bold text-red-600 mb-3">
-          Zone de danger
-        </h2>
         <button
           onClick={handleLogout}
           className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium"

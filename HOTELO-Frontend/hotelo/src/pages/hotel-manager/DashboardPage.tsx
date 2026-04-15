@@ -1,4 +1,3 @@
-// src/pages/hotel-manager/DashboardPage.tsx
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../context/useAuth";
 import { toast } from "sonner";
@@ -306,13 +305,13 @@ export default function DashboardPage() {
         <ActionLink to="/manager/profile" icon={Users} label="Mon Profil" color="bg-blue-50 text-blue-600" />
       </motion.div>
 
-      {/* TABLEAU DES RÉSERVATIONS CONSOLIDÉES */}
+      {/* TABLEAU DES RÉSERVATIONS */}
       {data?.reservationsEnAttente && data.reservationsEnAttente.length > 0 && (
         <motion.div variants={itemVariants} className="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-sm">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-lg font-bold text-[#0B1E3A]">Dernières réservations en attente</h3>
             <Link to="/manager/reservations" className="text-sm font-bold text-indigo-600 hover:text-indigo-700 transition">
-              Voir tout le registre →
+              Voir tout les reservations →
             </Link>
           </div>
 
@@ -333,10 +332,10 @@ export default function DashboardPage() {
                   </span>
                 </div>
                 <p className="text-xs text-slate-600 mb-3">
-                  👤 {res.client?.nom} {res.client?.prenom}
+                   {res.client?.nom} {res.client?.prenom}
                 </p>
                 <p className="text-xs text-slate-500 mb-4">
-                  📅 {new Date(res.dateArrivee).toLocaleDateString("fr-FR", {
+                   {new Date(res.dateArrivee).toLocaleDateString("fr-FR", {
                     month: "short",
                     day: "numeric",
                   })} → {new Date(res.dateDepart).toLocaleDateString("fr-FR", {
@@ -539,7 +538,7 @@ function HotelCardDashboard({ hotel }: HotelCardDashboardProps) {
   );
 }
 
-// COMPOSANT QUALITÉ ITEM
+// COMPOSANT QUALITÉ
 function QualityItem({ label, value, subtitle, icon: Icon, bg, color }: ActionCardProps) {
   return (
     <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className={`${bg} rounded-2xl p-5 border border-white shadow-sm`}>

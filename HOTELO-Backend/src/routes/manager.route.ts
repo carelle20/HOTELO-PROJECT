@@ -1,4 +1,3 @@
-// backend/src/routes/manager.routes.ts
 import { Router } from "express";
 import { ManagerController } from "../controllers/manager.controller";
 import { authenticate, authorize } from "../middlewares/auth.middleware";
@@ -96,10 +95,6 @@ router.get(
 router.get(
   "/hotels/:hotelId/reviews/stats",
   ManagerController.getReviewStats
-);
-router.put(
-  "/hotels/:hotelId/reviews/:id/moderate",
-  ManagerController.moderateReview
 );
 
 export default router;

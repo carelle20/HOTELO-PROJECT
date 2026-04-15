@@ -1,4 +1,3 @@
-// src/api/axios.ts
 import axios from "axios";
 
 /**
@@ -10,7 +9,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 10000, // Si le serveur ne répond pas après 10s, on arrête
+  timeout: 10000,
 });
 
 /**
@@ -35,7 +34,7 @@ api.interceptors.request.use(
 );
 
 /**
- * INTERCEPTEUR DE RÉPONSE (Optionnel mais très utile)
+ * INTERCEPTEUR DE RÉPONSE
  * Ce code s'exécute quand le backend répond.
  */
 api.interceptors.response.use(

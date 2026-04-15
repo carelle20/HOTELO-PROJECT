@@ -4,7 +4,7 @@ import { hotelService } from "../services/public.service";
 import { getErrorMessage, logError } from "../lib/utils";
 
 /**
- * Hook personnalisé pour rechercher des hôtels par ville
+ * Hook pour rechercher des hôtels par ville
  * @returns {UseSearchHotelsState & {search: (city: string) => Promise<void>}} État des résultats et fonction de recherche
  */
 export const useSearchHotels = () => {

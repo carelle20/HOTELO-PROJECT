@@ -18,11 +18,9 @@ interface HotelAmenitiesSectionProps {
   services?: Service[];
 }
 
-// Icon mapping for different equipment and services
 const iconMap: { [key: string]: React.ReactNode } = {
   "Wi-Fi": <Wifi size={28} />,
   "Petit-déjeuner inclus": <Coffee size={28} />,
-  // coffee: <Coffee size={28} />,
   "Reception 24h/24": <Users size={28} />,
   restaurant: <Utensils size={28} />,
   "Navette aéroport": <Car size={28} />,
@@ -77,7 +75,6 @@ export default function HotelAmenitiesSection({
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {equipements.map((equipement, index) => (
               <AmenityItem
-                // Sécurité : si idEquipement est undefined, on utilise l'index
                 key={`equipment-${equipement.idEquipement || index}`}
                 name={equipement.nom}
               />
@@ -93,7 +90,6 @@ export default function HotelAmenitiesSection({
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {services.map((service, index) => (
               <AmenityItem
-                // Sécurité : si idService est undefined, on utilise l'index
                 key={`service-${service.idService || index}`}
                 name={service.nom}
               />
